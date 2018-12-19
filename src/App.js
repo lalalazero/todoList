@@ -39,25 +39,26 @@ class App extends Component {
     })
   }
   updateTodoStatus = (item, status) => {
-      // let nList = _.cloneDeep(this.state.todoList)
-      let index = this.state.todoList.indexOf(item)
-      if(index >= 0) {
-        this.state.todoList[index].isComplete = status
-        this.setState({
-          todoList: this.state.todoList
-        })
-      }else{
-        console.log('cannot find ' + item)
-      }
+    let nList = _.cloneDeep(this.state.todoList)
+    let index = nList.indexOf(item)
+    if(index >= 0) {
+      nList[index].isComplete = status
+      this.setState({
+        todoList: nList
+      })
+    }else{
+      console.log('cannot find ' + item)
+    }
       
   }
   deleteTodo = (item) => {
-    let index = this.state.todoList.indexOf(item)
+    let nList = _.cloneDeep(this.state.todoList)
+    let todo = nList.filter(obj => obj.id === item.id)[0]
+    let index = nList.indexOf(todo)
     if(index >= 0) {
-      this.state.todoList.splice(index,1)
-      let nLlist = _.cloneDeep(this.state.todoList)
+      nList.splice(index,1)
       this.setState({
-        todoList: nLlist
+        todoList: nList
       })
     }else{
       console.log('cannot find ' + item)
