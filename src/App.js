@@ -1,46 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-
-
-class AddTodo extends Component {
-  constructor(props){
-    super(props)
-    this.input = React.createRef()
-  }
-  addTodo = ()=>{
-    const { addTodoItem } = this.props
-    let value = this.input.current.value
-    let todoItem = {
-      value: value,
-      isComplete: false
-    }
-    addTodoItem(todoItem)
-    this.input.current.value = ''
-  }
-  render() {
-    return (
-      <div>
-        <input ref={this.input} type='text'></input>
-        <button onClick={this.addTodo}>add</button>
-      </div>
-    )
-  }
-}
-
-class TodoItem extends Component {
-  render() {
-    const { todoList } = this.props
-    return (
-      <ul>
-        {
-          todoList.map((todo, index) => {
-            return <li key={index} >{todo.value}</li>
-          })
-        }
-      </ul>
-    )
-  }
-}
+import '_' from 'lodash';
+import AddTodo from './components/AddTodo/index.js'
+import TodoItem from './components/TodoItem/index.js'
 
 class App extends Component {
   constructor(props){
@@ -48,12 +10,24 @@ class App extends Component {
     this.state = {
       todoList: [
         {
+          id: 0,
           value: '123',
           isComplete: false
         },
         {
+          id: 1,
           value: '234',
           isComplete: false
+        },
+        {
+          id: 2,
+          value: 'xxx',
+          isComplete: true
+        },
+        {
+          id: 3,
+          value: 'yyy',
+          isComplete: true
         }
       ]
     }
@@ -64,12 +38,39 @@ class App extends Component {
       todoList: this.state.todoList
     })
   }
+  updateTodoStatus = (item, status) => {
+      // let nList = _.cloneDeep(this.state.todoList)
+      let index = this.state.todoList.indexOf(item)
+      if(index >= 0) {
+        this.state.todoList[index].isComplete = status
+        this.setState({
+          todoList: this.state.todoList
+        })
+      }else{
+        console.log('cannot find ' + item)
+      }
+      
+  }
+  deleteTodo = (item) => {
+    let index = this.state.todoList.indexOf(item)
+    if(index >= 0) {
+      this.state.todoList.splice(index,1)
+      let nLlist = _.cloneDeep(this.state.todoList)
+      this.setState({
+        todoList: nLlist
+      })
+    }else{
+      console.log('cannot find ' + item)
+    }
+    
+    
+  }
   render() {
     return (
-      <div>
+      <div className='layout'>
         <h2>Todo List</h2>
         <AddTodo addTodoItem={this.addTodoItem}></AddTodo>
-        <TodoItem todoList={this.state.todoList}></TodoItem>
+        <TodoItem handleDelete={this.deleteTodo} handleUpdate={this.updateTodoStatus} todoList={this.state.todoList}></TodoItem>
       </div>
     );
   }

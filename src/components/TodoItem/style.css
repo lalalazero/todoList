@@ -1,0 +1,30 @@
+.todoItems {
+    list-style: none
+}
+.todoItem {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+.todoItem::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.todoItem > .anchor {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border: 1px solid black;
+    margin-right: 5px 
+}
+.todoItem.done > .anchor{
+    background: black
+}
+
+.todoItem > .delete {
+    width: 10px;
+    height: 10px;
+    display: block;
+    float: right;
+    color: red;
+}
