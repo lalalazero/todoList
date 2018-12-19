@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
-import '_' from 'lodash';
+import _ from 'lodash';
 import AddTodo from './components/AddTodo/index.js'
 import TodoItem from './components/TodoItem/index.js'
+import './App.css';
 
 class App extends Component {
   constructor(props){
