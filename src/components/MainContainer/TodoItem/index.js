@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Icon } from 'antd'
 import './style.css'
 
 export default class TodoItem extends Component {
@@ -26,7 +27,6 @@ export default class TodoItem extends Component {
                 <li className='todoItem' key={index}>
                   <span className='anchor' onClick={()=>{this.doneItem(todo)}}></span>
                   {todo.value}
-                  <span className='delete' onClick={()=>{this.deleteItem(todo)}}>x</span>
                 </li>
               )
             })
@@ -35,9 +35,9 @@ export default class TodoItem extends Component {
             completeList.map((todo, index) => {
               return (
                 <li className='todoItem done' key={index} >
-                  <span className='anchor' onClick={()=>{this.unDoneItem(todo)}}></span>
+                  {/* <span className='anchor' onClick={()=>{this.unDoneItem(todo)}}></span> */}
+                  <Icon type='check-square'></Icon>
                   {todo.value}
-                  <span className='delete' onClick={()=>{this.deleteItem(todo)}}>x</span>
                 </li>
               )
             })

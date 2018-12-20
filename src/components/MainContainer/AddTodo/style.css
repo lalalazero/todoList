@@ -1,0 +1,28 @@
+.addTodoArea {
+    /* background: #257aff91; */
+    background: rgba(5,95,235,0.75);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+}
+
+
+.addTodoArea svg {
+    width: 20px;
+    height: 20px;
+    color: white;
+    margin-left: 10px; 
+}
+.addTodoArea input::-webkit-input-placeholder {
+    color: #f1f1f1;
+}
+.addTodoArea input[type='text'] {
+    border: none;
+    background: transparent;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+.addTodoArea input[type='text']:focus {
+    outline: none;
+}

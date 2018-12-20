@@ -1,20 +1,36 @@
 .todoItems {
-    list-style: none
+    list-style: none;
+    margin-top: 15px;
 }
 .todoItem {
     padding: 5px 0;
-    border-bottom: 1px solid #ccc;
-    position: relative
+    position: relative;
+    height: 45px;
+    border-radius: 3px;
+    background: white;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    margin-bottom: 2px;
+    color: black;
 }
 .todoItem > .anchor {
-    width: 10px;
-    height: 10px;
+    width: 17px;
+    height: 17px;
     display: inline-block;
-    border: 1px solid black;
-    margin-right: 5px 
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin: 0 10px;
 }
-.todoItem.done > .anchor{
-    background: black
+.todoItem.done {
+    text-decoration: line-through;
+    background: #ccc;
+    opacity: .5;
+}
+.todoItem.done svg {
+    width: 17px;
+    height: 17px;
+    margin: 0 10px;
 }
 
 .todoItem > .delete {
