@@ -1,6 +1,7 @@
 import React , { Component } from 'react'
 import AddTodo from './AddTodo'
 import TodoItem from './TodoItem'
+import PropTypes from 'prop-types'
 import './style.css'
 
 
@@ -26,5 +27,13 @@ export default class MainContainer extends Component {
             
             </section>
         )
-    }
+    }  
+}
+
+MainContainer.propTypes = {
+    addTodoItem: PropTypes.func.isRequired,
+    deleteTodo: PropTypes.func.isRequired,
+    updateTodoStatus: PropTypes.func.isRequired,
+    todoList: PropTypes.array.isRequired
+    
 }

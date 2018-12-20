@@ -3,11 +3,13 @@ import { Icon } from 'antd'
 import './style.css'
 
 export default class TodoItem extends Component {
-    doneItem = (item) => {
+    done = (item) => {
+      console.log('done..',item);
       const { handleUpdate } = this.props
       handleUpdate(item, true)
     }
-    unDoneItem = (item) => {
+    unDone = (item) => {
+      console.log('undone...',item);
       const { handleUpdate } = this.props
       handleUpdate(item, false)
     }
@@ -25,7 +27,7 @@ export default class TodoItem extends Component {
             notCompleteList.map((todo, index) => {
               return ( 
                 <li className='todoItem' key={index}>
-                  <span className='anchor' onClick={()=>{this.doneItem(todo)}}></span>
+                  <span className='anchor' onClick={()=>{this.done(todo)}}></span>
                   {todo.value}
                 </li>
               )
@@ -35,8 +37,7 @@ export default class TodoItem extends Component {
             completeList.map((todo, index) => {
               return (
                 <li className='todoItem done' key={index} >
-                  {/* <span className='anchor' onClick={()=>{this.unDoneItem(todo)}}></span> */}
-                  <Icon type='check-square'></Icon>
+                  <Icon type='check-square' onClick={()=>{this.unDone(todo)}}></Icon>
                   {todo.value}
                 </li>
               )

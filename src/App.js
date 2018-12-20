@@ -33,6 +33,7 @@ class App extends Component {
     }
   }
   addTodoItem = (item)=>{
+    item.id = this.state.todoList.length + 1;
     this.state.todoList.push(item)
     this.setState({
       todoList: this.state.todoList
@@ -71,7 +72,12 @@ class App extends Component {
     return (
       <div className='layout'>
         <SideNav></SideNav>
-        <MainContainer {...this.state}></MainContainer>
+        <MainContainer {...this.state} 
+          addTodoItem={this.addTodoItem} 
+          updateTodoStatus={this.updateTodoStatus}
+          deleteTodo={this.deleteTodo}
+        >
+        </MainContainer>
       </div>
     );
   }
