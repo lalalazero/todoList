@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 * {
   margin: 0;
   padding: 0;
@@ -14,6 +16,7 @@
 }
 .mainContainer {
   height: 100%;
-  border: 1px solid green;
-  margin-left: 205px; 
+  margin-left: 280px; 
+  background: url('./assets/background-01.jpg') no-repeat center;
+  background-size: cover;
 }

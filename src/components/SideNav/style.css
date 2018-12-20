@@ -1,6 +1,9 @@
 .sideNav{
     float: left;
-    width: 200px;
+    width: 280px;
     height: 100%;
-    border: 1px solid red;
+}
+.menuBar {
+    height: 45px;
+    background-color: #0455d2;
 }
