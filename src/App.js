@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import AddTodo from './components/AddTodo/index.js'
-import TodoItem from './components/TodoItem/index.js'
+import AddTodo from './components/AddTodo'
+import TodoItem from './components/TodoItem'
+import SideNav from './components/SideNav'
 import './App.css';
 
 class App extends Component {
@@ -40,7 +41,8 @@ class App extends Component {
   }
   updateTodoStatus = (item, status) => {
     let nList = _.cloneDeep(this.state.todoList)
-    let index = nList.indexOf(item)
+    let todo = nList.filter(obj => obj.id === item.id)[0]
+    let index = nList.indexOf(todo)
     if(index >= 0) {
       nList[index].isComplete = status
       this.setState({
@@ -69,9 +71,16 @@ class App extends Component {
   render() {
     return (
       <div className='layout'>
-        <h2>Todo List</h2>
-        <AddTodo addTodoItem={this.addTodoItem}></AddTodo>
-        <TodoItem handleDelete={this.deleteTodo} handleUpdate={this.updateTodoStatus} todoList={this.state.todoList}></TodoItem>
+        <SideNav></SideNav>
+        <div className='mainContainer'>
+          <h2>Todo List</h2>
+          <AddTodo addTodoItem={this.addTodoItem}></AddTodo>
+          <TodoItem 
+            handleDelete={this.deleteTodo} 
+            handleUpdate={this.updateTodoStatus} 
+            todoList={this.state.todoList}>
+          </TodoItem>
+        </div>
       </div>
     );
   }

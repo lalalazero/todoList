@@ -5,6 +5,15 @@
 }
 
 .layout {
-  width: 900px;
-  margin: 0 auto;
+  height: 100%;
+}
+.layout:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+.mainContainer {
+  height: 100%;
+  border: 1px solid green;
+  margin-left: 205px; 
 }
