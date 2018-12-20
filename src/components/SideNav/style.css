@@ -2,8 +2,84 @@
     float: left;
     width: 280px;
     height: 100%;
+    position: relative;
 }
 .menuBar {
     height: 45px;
     background-color: #0455d2;
+}
+.menuIcon > svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    margin: 10px;
+}
+
+.userInfo {
+    height: 45px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.userInfo > img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; 
+}
+.userInfo .userName {
+    margin: 0 10px;
+}
+
+.userInfo svg {
+    width: 12px;
+}
+
+.list {
+    overflow: scroll;
+    height: calc(100% - (45px*3))
+}
+
+.list > li {
+    padding: 10px 8px;
+    display: flex;
+    align-items: center;
+}
+ 
+.list > li svg {
+    width: 25px;
+    height: 25px;
+    padding: 0 3px;
+}
+.list > li span {
+    padding: 0 6px;
+    font-size: 15px;
+}
+
+.list > li.schedule {
+    color: #328ad6;
+}
+
+.list > li.calendar {
+    color: green;
+}
+
+
+.addListContainer {
+    position: absolute;
+    bottom: 0;
+    height: 45px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    color: #328ad6;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    background: #f7f7f7;
+}
+
+.addListContainer svg {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px;
 }

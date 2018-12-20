@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import './style.css'
 
 export default class TodoItem extends Component {
-    constructor(props) {
-      super(props)
-    }
     doneItem = (item) => {
       const { handleUpdate } = this.props
       handleUpdate(item, true)

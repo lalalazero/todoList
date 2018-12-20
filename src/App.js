@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import AddTodo from './components/AddTodo'
-import TodoItem from './components/TodoItem'
 import SideNav from './components/SideNav'
+import MainContainer from './components/MainContainer'
 import './App.css';
 
 class App extends Component {
@@ -72,15 +71,7 @@ class App extends Component {
     return (
       <div className='layout'>
         <SideNav></SideNav>
-        <div className='mainContainer'>
-          <h2>Todo List</h2>
-          <AddTodo addTodoItem={this.addTodoItem}></AddTodo>
-          <TodoItem 
-            handleDelete={this.deleteTodo} 
-            handleUpdate={this.updateTodoStatus} 
-            todoList={this.state.todoList}>
-          </TodoItem>
-        </div>
+        <MainContainer {...this.state}></MainContainer>
       </div>
     );
   }

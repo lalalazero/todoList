@@ -1,0 +1,19 @@
+.mainContainer {
+    height: 100%;
+    margin-left: 280px; 
+}
+
+header {
+    height: 45px;
+    font-size: 18px;
+    color: white;
+    padding: 10px;
+    background: #055feb;
+}
+header + div {
+    background: url('../../assets/background-01.jpg') no-repeat center;
+    background-size: cover;
+    height: calc(100% - 45px);
+    padding: 10px;
+    overflow: scroll;
+}
