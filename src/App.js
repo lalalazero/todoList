@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import SideNav from './components/SideNav'
 import MainContainer from './components/MainContainer'
+import Login from './components/Login'
 import './App.css';
 
 class App extends Component {
@@ -68,18 +69,27 @@ class App extends Component {
     
     
   }
+  // render() {
+  //   return (
+  //     <div className='layout'>
+  //       <SideNav></SideNav>
+  //       <MainContainer {...this.state} 
+  //         addTodoItem={this.addTodoItem} 
+  //         updateTodoStatus={this.updateTodoStatus}
+  //         deleteTodo={this.deleteTodo}
+  //       >
+  //       </MainContainer>
+  //     </div>
+  //   );
+  // }
+
   render() {
     return (
       <div className='layout'>
-        <SideNav></SideNav>
-        <MainContainer {...this.state} 
-          addTodoItem={this.addTodoItem} 
-          updateTodoStatus={this.updateTodoStatus}
-          deleteTodo={this.deleteTodo}
-        >
-        </MainContainer>
+        <Login></Login>
       </div>
-    );
+      
+    )
   }
 }
 
