@@ -6,13 +6,13 @@
     display: flex;
 }
 
-.loginPanel {
+.panel {
     width: 400px;
     margin-left: 15%;
     height: 100%;
     margin-top: 180px;
 }
-.loginPanel > h2 {
+.panel > h2 {
     color: #0455d2;
 }
 .loginForm {
@@ -46,7 +46,15 @@
 }
 .loginOptions {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    /* text-decoration: underline; */
+}
+.loginOptions:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.loginOptions a:first-child{
+    float: left;
+}
+.loginOptions a:last-child{
+    float: right;
 }
