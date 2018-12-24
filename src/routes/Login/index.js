@@ -1,4 +1,6 @@
-import React, { Component }from 'react'
+import React, { Component } from 'react'
+import './style.css'
+import { Link } from 'react-router-dom'
 
 export default class Login extends Component {
     render(){
@@ -18,8 +20,8 @@ export default class Login extends Component {
                     </div>
                 </form>
                 <div className='loginOptions'>
-                    <a href='/resetPass'>忘记密码？</a>
-                    <a href='/#/register'>没有账号，去注册</a>
+                    <Link to='/resetPass'>忘记密码？</Link>
+                    <Link to='/register'>没有账号，去注册</Link>
                 </div>
             </div>
             </div>

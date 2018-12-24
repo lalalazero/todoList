@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-
+import './style.css'
+import { Link } from 'react-router-dom'
 
 export default class Register extends Component {
     render(){
@@ -19,7 +20,7 @@ export default class Register extends Component {
                         </div>
                     </form>
                     <div className='loginOptions'>
-                        <a href='/#/login' >已有账号，去登录</a>
+                        <Link to='/login' >已有账号，去登录</Link>
                     </div>
                 </div>
             </div>
