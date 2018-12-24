@@ -10,14 +10,14 @@ class AddTodo extends Component {
       }
     }
     addTodo = ()=>{
-      const { addTodoItem } = this.props
-      let value = this.input.current.value
-      let todoItem = {
-        value: value,
-        isComplete: false
-      }
-      addTodoItem(todoItem)
-      this.input.current.value = ''
+      // const { addTodoItem } = this.props
+      // let value = this.input.current.value
+      // let todoItem = {
+      //   value: value,
+      //   isComplete: false
+      // }
+      // addTodoItem(todoItem)
+      // this.input.current.value = ''
     }
     handleKeydown = (e) => {
       if(e.keyCode === 13){ // 回车键
@@ -30,7 +30,6 @@ class AddTodo extends Component {
           <Icon type='plus' onClick={this.addTodo}></Icon>
           <input ref={this.input} type='text' 
             placeholder='Add a todo...' 
-            onInput={this.handleInput}
             onKeyDown={this.handleKeydown}
           >
           </input>

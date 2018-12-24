@@ -3,7 +3,9 @@ import { Icon } from 'antd';
 import './style.css';
 
 export default class SideNav extends Component {
-    
+
+    imgsrc = 'http://pis5t89ex.bkt.clouddn.com/selfile.png'
+
     render(){
         return(
             <div className='sideNav'>
@@ -11,7 +13,7 @@ export default class SideNav extends Component {
                     <Icon className='menuIcon' type='menu-unfold'></Icon>
                 </div>
                 <div className='userInfo'>
-                    <img src='' alt='selfile'/>
+                    <img src={this.imgsrc} alt='selfile'/>
                     <span className='userName' >夏了个夏天</span>
                     <Icon className='' type='down'></Icon>
                 </div>
