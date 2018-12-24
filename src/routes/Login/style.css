@@ -1,0 +1,60 @@
+.loginBg {
+    width: 100%;
+    height: 100%;
+    background: url('./../../assets/background-01.jpg') no-repeat center;
+    background-size: cover; 
+    display: flex;
+}
+
+.panel {
+    width: 400px;
+    margin-left: 15%;
+    height: 100%;
+    margin-top: 180px;
+}
+.panel > h2 {
+    color: #0455d2;
+}
+.loginForm {
+    width: 100%;
+}
+
+.login-row {
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+}
+
+.login-row input {
+    width: 100%;
+    border: none;
+    margin-bottom: 5px;
+    background: transparent;
+}
+.login-row input:focus {
+    outline: none;
+}
+
+.loginBtn {
+    margin-top: 5px;
+    background: #0455d2;
+    color: white;
+    margin-bottom: 5px;
+}
+.loginBtn:focus {
+    opacity: .8;
+    outline: none;
+}
+.loginOptions {
+    width: 100%;
+}
+.loginOptions:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.loginOptions a:first-child{
+    float: left;
+}
+.loginOptions a:last-child{
+    float: right;
+}

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import SideNav from './components/SideNav'
-import MainContainer from './components/MainContainer'
-import Login from './components/Login'
+import { BrowserRouter as Router, Route } from "react-router-dom";
+// import Login from './routes/Login'
+// import Register from './routes/Register'
+// import Home from './routes/Home'
 import './App.css';
 
 class App extends Component {
@@ -69,25 +70,22 @@ class App extends Component {
     
     
   }
-  // render() {
-  //   return (
-  //     <div className='layout'>
-  //       <SideNav></SideNav>
-  //       <MainContainer {...this.state} 
-  //         addTodoItem={this.addTodoItem} 
-  //         updateTodoStatus={this.updateTodoStatus}
-  //         deleteTodo={this.deleteTodo}
-  //       >
-  //       </MainContainer>
-  //     </div>
-  //   );
-  // }
+  
 
   render() {
+    const Index = ()=>{return (<h2>index</h2>)}
+    const Login=()=>{return(<div>Login</div>)}
+    const Register=()=>{return(<div>Register</div>)}
+    const Home=()=>{return(<div>home</div>)}
     return (
-      <div className='layout'>
-        <Login></Login>
-      </div>
+        <Router>
+          {/* <Route path="/" exact component={Index}>
+            
+          </Route> */}
+          <Route path="/login" exact component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/home" component={Home} />
+        </Router>
       
     )
   }

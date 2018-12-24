@@ -14,7 +14,8 @@ function checkstauts(response){
 function request(url, options) {
     let newUrl = `${prefix}${url}`
     const defaultOptions = {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include' 
     }
     const newOptions = {...defaultOptions, ...options};
     if(
