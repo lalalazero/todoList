@@ -4,7 +4,12 @@
     height: 100%;
     position: relative;
 }
+
+.sideNav.fold {
+    width: 45px;
+}
 .menuBar {
+    width: 100%;
     height: 45px;
     background-color: #0455d2;
 }
@@ -36,6 +41,7 @@
 }
 
 .list {
+    width: 100%;
     overflow: scroll;
     height: calc(100% - (45px*3))
 }
@@ -82,4 +88,74 @@
     width: 20px;
     height: 20px;
     margin: 0 10px;
+}
+
+.createListModalBg {
+    background: rgba(0, 0, 0, .4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    
+}
+
+.createListModal {
+    background: white;
+    width: 400px;
+    height: 150px;
+    position: fixed;
+    padding: 0 20px;
+    top: 25%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+}
+.createListModal h2{
+    margin: 10px 0;
+    color: #328ad6;
+}
+
+.createListModal input[type='text']{
+    font-size: 16px;
+    width: 100%;
+    height: 40px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+}
+
+.createListModal input[type='text']:focus{
+    outline: none;
+    border-color: #328ad6; 
+}
+
+.createListModal div {
+    width: 100%;
+    margin: 15px 0 auto auto; 
+    display: flex;
+    justify-content: flex-end;
+}
+
+.createListModal button{
+    width: 70px;
+    border: none;
+    /* background: lightblue; */
+    padding: 5px 0px;
+    border-radius: 2px;
+    margin-left: 15px;
+    border: 1px solid #ccc;
+}
+
+.createListModal button:focus{
+    outline: none;
+    border-color: #328ad6;
+}
+
+.createListModal button:hover{
+    border-color: #328ad6;
+    cursor: pointer;
 }

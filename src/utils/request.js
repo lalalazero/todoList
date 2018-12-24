@@ -15,13 +15,15 @@ function request(url, options) {
     let newUrl = `${prefix}${url}`
     const defaultOptions = {
         method: 'GET',
-        credentials: 'include' 
+        credentials: 'include',
+        header: localStorage.getItem('token')
     }
     const newOptions = {...defaultOptions, ...options};
     if(
         newOptions.method === 'GET' || 
         newOptions.method === 'POST' ||
-        newOptions.method === 'DELETE'
+        newOptions.method === 'DELETE' || 
+        newOptions.method === "PUT"
     ){
         if(newOptions.body instanceof FormData) {
             // newOptions is formData
