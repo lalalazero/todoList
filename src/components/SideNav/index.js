@@ -11,7 +11,8 @@ export default class SideNav extends Component {
             fold: false,
             list: [],
             modalVisible: false,
-            newListName: ''
+            newListName: '',
+            curList: -1
         }
         this.inboxList = -1
     }
@@ -51,7 +52,7 @@ export default class SideNav extends Component {
                     }
                 })
                 if(this.inboxList !== -1){
-                    this.queryListItems(this.inboxList, 0)
+                    this.props.queryListItems(this.inboxList, 0)
                 }
                 this.setState({
                     list: userList
@@ -61,12 +62,7 @@ export default class SideNav extends Component {
     }
 
 
-     // 根据id查询清单的todo
-    queryListItems = (listId, status) => {
-        request(`lists/items?id=${listId}&type=${status}`).then(res => {
-            console.log('查询到清单的item。。',res)
-        })
-    }
+     
 
     showModal = () => {
         this.setState({
@@ -98,6 +94,26 @@ export default class SideNav extends Component {
         })
     }
 
+    handleListClick = (item)=>{
+        console.log('list clicked...',item)
+        this.setState({
+            curList: item.id
+        })
+        console.log(this.props)
+        const { queryListItems, updateCurList } = this.props
+        updateCurList(item.id)
+        //queryListItems(item.id, 0)
+
+    }
+    clickDefaultList = (e) => {
+        this.setState({
+            curList: -1
+        })
+        const {  queryListItems, updateCurList } = this.props
+        updateCurList(this.inboxList)
+        //queryListItems(this.inboxList, 0)
+    }
+
     render(){
         const unfoldNav = () => {
             return(
@@ -111,14 +127,14 @@ export default class SideNav extends Component {
                         <Icon className='' type='down'></Icon>
                     </div>
                     <ul className='list'>
-                        <li className='schedule'>
+                        <li className='schedule' curlist={this.state.curList === -1 ? 'yes' : 'no'} onClick={this.clickDefaultList}>
                             <Icon type='schedule'></Icon>
                             <span>计划</span>
                         </li>
                         {
                             this.state.list.map((item, i) => {
                                 return (
-                                    <li key={i}>
+                                    <li key={i} onClick={() => this.handleListClick(item)} curlist={this.state.curList === item.id ? 'yes' : 'no'}>
                                         <Icon type='bars'></Icon>
                                         <span>{ item.name }</span>
                                     </li>

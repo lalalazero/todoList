@@ -51,6 +51,10 @@
     display: flex;
     align-items: center;
 }
+
+.list > li[curList='yes'] {
+    background: #d7ecfa;
+}
  
 .list > li svg {
     width: 25px;

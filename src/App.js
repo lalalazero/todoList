@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from './routes/Login'
 import Register from './routes/Register'
 import Home from './routes/Home'
+import { request } from './utils/request'
 import './App.css';
 
 class App extends Component {
@@ -11,29 +12,29 @@ class App extends Component {
     super(props)
     this.state = {
       todoList: [
-        {
-          id: 0,
-          value: '123',
-          isComplete: false
-        },
-        {
-          id: 1,
-          value: '234',
-          isComplete: false
-        },
-        {
-          id: 2,
-          value: 'xxx',
-          isComplete: true
-        },
-        {
-          id: 3,
-          value: 'yyy',
-          isComplete: true
-        }
-      ]
+        
+      ],
+      curList: -1
     }
   }
+
+  updateCurList = (listId)=>{
+    this.setState({
+      curList: listId
+    })
+  }
+
+  // 根据id查询清单的todo
+  queryListItems = (listId, status) => {
+    request(`lists/items?id=${listId}&type=${status}`).then(res => {
+        console.log('查询到清单的item。。',res)
+        this.setState({
+          todoList: res.data,
+        })
+    })
+}
+
+
   addTodoItem = (item)=>{
     item.id = this.state.todoList.length + 1;
     this.state.todoList.push(item)
@@ -70,6 +71,21 @@ class App extends Component {
     
     
   }
+
+  myRender = (props)=>{
+    return(
+      <Home 
+      xxx={'xxx'} 
+      addTodoItem={this.addTodoItem}
+      deleteTodo={this.deleteTodo}
+      updateTodoStatus={this.updateTodoStatus}
+      todoList={this.state.todoList}
+      queryListItems={this.queryListItems}
+      curList={this.state.curList}
+      updateCurList={this.updateCurList}
+      {...props}></Home>
+    )
+  }
   
 
   render() {
@@ -80,7 +96,7 @@ class App extends Component {
             <Route path="/" exact component={x} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/home" component={Home} />
+            <Route path="/home" render={this.myRender} xxx={'xxx'}/>
           </div>
           
         </Router>

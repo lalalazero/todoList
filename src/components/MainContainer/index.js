@@ -13,6 +13,7 @@ export default class MainContainer extends Component {
             updateTodoStatus,
             todoList
         } = this.props
+        console.log('maincontainer...props...',this.props)
         return (
             <section className='mainContainer'>
             <header>计划</header>

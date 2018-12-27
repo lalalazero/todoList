@@ -5,12 +5,11 @@ import MainContainer from '../../components/MainContainer'
 
 export default class Home extends Component{
   render(){
-    const { list } = this.props
-    console.log('list....', list)
+    console.log('Home..props..', this.props)
     return(
       <div style={{height: '100%'}}>
-        <SideNav></SideNav>
-        <MainContainer ></MainContainer>
+        <SideNav {...this.props}></SideNav>
+        <MainContainer {...this.props}></MainContainer>
       </div>
     );
   }
