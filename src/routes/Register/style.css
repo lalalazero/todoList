@@ -22,6 +22,7 @@
 .login-row {
     border-bottom: 1px solid #ccc;
     padding: 5px;
+    position: relative;
 }
 
 .login-row input {
@@ -34,15 +35,30 @@
     outline: none;
 }
 
+.login-row span {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    color: rgba(0,0,0,.4);
+}
+
 .loginBtn {
     margin-top: 5px;
     background: #0455d2;
     color: white;
     margin-bottom: 5px;
+    position: relative;
 }
 .loginBtn:focus {
     opacity: .8;
     outline: none;
+}
+.loginBtn svg {
+    width: 20px;
+    position: absolute;
+    top: 30%;
+    right: 40%;
 }
 .loginOptions {
     width: 100%;

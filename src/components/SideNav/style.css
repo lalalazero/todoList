@@ -57,6 +57,11 @@
     height: 25px;
     padding: 0 3px;
 }
+
+.list > li svg[data-icon='ellipsis']{
+    transform: rotate(90deg);
+    color: green;
+}
 .list > li span {
     padding: 0 6px;
     font-size: 15px;
@@ -89,6 +94,7 @@
     height: 20px;
     margin: 0 10px;
 }
+
 
 .createListModalBg {
     background: rgba(0, 0, 0, .4);

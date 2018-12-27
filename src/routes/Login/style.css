@@ -39,10 +39,19 @@
     background: #0455d2;
     color: white;
     margin-bottom: 5px;
+    position: relative;
+
 }
 .loginBtn:focus {
     opacity: .8;
     outline: none;
+}
+
+.loginBtn svg {
+    width: 20px;
+    position: absolute;
+    top: 30%;
+    right: 40%;
 }
 .loginOptions {
     width: 100%;

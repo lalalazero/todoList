@@ -13,9 +13,10 @@ export default class SideNav extends Component {
             modalVisible: false,
             newListName: ''
         }
+        this.inboxList = -1
     }
 
-    imgsrc = 'http://pis5t89ex.bkt.clouddn.com/selfile.png'
+    imgsrc = 'https://lalalazero.top/todo/selfie/my.png'
 
     foldNavBar = () => {
         let fold = !this.state.fold
@@ -25,21 +26,45 @@ export default class SideNav extends Component {
     }
 
     componentDidMount(){
-        this.queryLists()
+        this.queryUserLists()
     }
 
+    /*
+    查询计划清单的todo
+     */
     queryInboxItems = ()=>{
 
     }
+    
 
-    queryLists = () => {
-        const userid = 1
+    // 查询用户创建的清单
+    queryUserLists = () => {
+        const userid = localStorage.getItem('userId')
         request(`lists?userid=${userid}`).then(res => {
             if(res.status === 0){
+                let userList = [];
+                res.data.forEach(obj => {
+                    if(obj.userCreate === 1){
+                        userList.push(obj);
+                    }else if(obj.userCreate === 0 && obj.name === '计划'){
+                        this.inboxList = obj.id;
+                    }
+                })
+                if(this.inboxList !== -1){
+                    this.queryListItems(this.inboxList, 0)
+                }
                 this.setState({
-                    list: res.data
+                    list: userList
                 })
             }
+        })
+    }
+
+
+     // 根据id查询清单的todo
+    queryListItems = (listId, status) => {
+        request(`lists/items?id=${listId}&type=${status}`).then(res => {
+            console.log('查询到清单的item。。',res)
         })
     }
 
@@ -57,7 +82,7 @@ export default class SideNav extends Component {
     }
 
     saveList = () => {
-        const userid = 1
+        const userid = localStorage.getItem('userId')
         const name = this.state.newListName;
         request(`lists?userid=${userid}&name=${name}`,{ method: 'POST'}).then(res => {
             if(res.status === 0){
@@ -66,7 +91,7 @@ export default class SideNav extends Component {
                     modalVisible: false,
                     newListName: ''
                 })
-                this.queryLists()
+                this.queryUserLists()
             }else{
                 message.error(res.msg)
             }
@@ -90,22 +115,6 @@ export default class SideNav extends Component {
                             <Icon type='schedule'></Icon>
                             <span>计划</span>
                         </li>
-                        {/* <li className='calendar'>
-                            <Icon type='calendar'></Icon>
-                            <span>今天</span>
-                        </li> */}
-                        {/* <li>
-                            <Icon type='bars'></Icon>
-                            <span>工作</span>
-                        </li>
-                        <li>
-                            <Icon type='bars'></Icon>
-                            <span>生活</span>
-                        </li>
-                        <li>
-                            <Icon type='bars'></Icon>
-                            <span>元旦晚会</span>
-                        </li> */}
                         {
                             this.state.list.map((item, i) => {
                                 return (
@@ -136,23 +145,18 @@ export default class SideNav extends Component {
                         <img src={this.imgsrc} alt='selfile'/>
                     </div>
                     <ul className='list'>
-                        {/* <li className='schedule'>
+                        <li className='schedule'>
                             <Icon type='schedule'></Icon>
                         </li>
-                        <li className='calendar'>
+                        {/* <li className='calendar'>
                             <Icon type='calendar'></Icon>
                         </li> */}
-                        <li>
-                            <Icon type='bars'></Icon>
+                        <li onClick={this.foldNavBar}>
+                            <Icon type='ellipsis'></Icon>
                         </li>
-                        <li>
-                            <Icon type='bars'></Icon>
-                        </li>
-                        <li>
-                            <Icon type='bars'></Icon>
-                        </li>
+                    
                     </ul>
-                    <div className='addListContainer'>
+                    <div className='addListContainer' onClick={this.showModal}>
                         <Icon type='plus'></Icon>
                     </div>
                 </div>

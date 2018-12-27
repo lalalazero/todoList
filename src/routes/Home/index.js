@@ -5,6 +5,8 @@ import MainContainer from '../../components/MainContainer'
 
 export default class Home extends Component{
   render(){
+    const { list } = this.props
+    console.log('list....', list)
     return(
       <div style={{height: '100%'}}>
         <SideNav></SideNav>
