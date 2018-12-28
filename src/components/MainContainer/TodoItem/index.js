@@ -8,6 +8,7 @@ export default class TodoItem extends Component {
       this.state = {
         showComplete: false,
         contextShow: false,
+        curTodoId: -1,
       }
       this.curTodoId = -1
 
@@ -102,6 +103,13 @@ export default class TodoItem extends Component {
       }
     }
 
+    handleClick = (e)=>{
+      console.log(e.target.getAttribute('itemId'))
+      this.setState({
+        curTodoId: e.target.getAttribute('itemId') - 0
+      })
+    }
+
     render() {
       const { todoList, completeList, showComplete } = this.props
       return (
@@ -109,7 +117,7 @@ export default class TodoItem extends Component {
           {
             todoList.map((todo, index) => {
               return ( 
-                <li className='todoItem' key={index} itemId={todo.id}>
+                <li className='todoItem' key={index} itemId={todo.id} active={this.state.curTodoId === todo.id ? 'yes' : 'no'} onClick={this.handleClick}>
                   <span className='anchor' onClick={()=>{this.done(todo.id)}}></span>
                   {todo.value}
                 </li>

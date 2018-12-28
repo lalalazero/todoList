@@ -14,6 +14,9 @@
     margin-bottom: 2px;
     color: black;
 }
+.todoItem[active='yes'] {
+    background: #d7ecfa;
+}
 .todoItem > .anchor {
     width: 17px;
     height: 17px;
