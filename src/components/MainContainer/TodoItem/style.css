@@ -52,3 +52,25 @@
     border-radius: 10px;
     letter-spacing: 2px;
 }
+
+.contextMenu {
+    border: 1px solid #ccc;
+    position: fixed;
+    background: white;
+    border-radius: 5px;
+    padding: 5px 0;
+    box-shadow: 1px 1px 1px #ccc, -1px -1px 1px #ccc;
+}
+
+.contextMenu li {
+    padding: 5px 10px;
+}
+
+.contextMenu li:hover{
+    cursor: pointer;
+    background: #d7ecfa;
+}
+
+.contextMenu li svg {
+    margin-right: 5px;
+}

@@ -65,8 +65,8 @@ queryComplete = ()=>{
     request(`lists/items?id=${this.state.curList}&value=${value}`,{ method: 'POST' }).then(res=>this.refreshTodos(res))
     
   }
-  updateTodoStatus = (item, status) => {
-    request(`lists/items/status?id=${item.id}&status=${status}`,{ method: 'PUT'}).then(res=>this.refreshTodos(res))
+  updateTodoStatus = (id, status) => {
+    request(`lists/items/status?id=${id}&status=${status}`,{ method: 'PUT'}).then(res=>this.refreshTodos(res))
       
   }
   deleteTodo = (id) => {
