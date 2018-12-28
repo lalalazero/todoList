@@ -19,7 +19,8 @@ class App extends Component {
 
       ],
       curList: -1,
-      showComplete: false
+      showComplete: false,
+      showSideBar: false,
     }
   }
 
@@ -83,6 +84,18 @@ queryComplete = ()=>{
     }
   }
 
+  foldSideBar = ()=>{
+    this.setState({
+      showSideBar: false
+    })
+  }
+
+  revealSideBar = ()=>{
+    this.setState({
+      showSideBar: true
+    })
+  }
+
   myRender = (props)=>{
     return(
       <Home 
@@ -98,9 +111,13 @@ queryComplete = ()=>{
       queryComplete={this.queryComplete}
       handleShowComplete={this.handleShowComplete}
       showComplete={this.state.showComplete}
+      showSideBar={this.state.showSideBar}
+      foldSideBar={this.foldSideBar}
+      revealSideBar={this.revealSideBar}
       {...props}></Home>
     )
   }
+
   
 
   render() {

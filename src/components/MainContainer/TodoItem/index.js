@@ -109,6 +109,13 @@ export default class TodoItem extends Component {
         curTodoId: e.target.getAttribute('itemId') - 0
       })
     }
+    doubleClick = (e) => {
+      this.setState({
+        curTodoId: e.target.getAttribute('itemId') - 0
+      })
+      const { revealSideBar } = this.props
+      revealSideBar()
+    }
 
     render() {
       const { todoList, completeList, showComplete } = this.props
@@ -117,7 +124,10 @@ export default class TodoItem extends Component {
           {
             todoList.map((todo, index) => {
               return ( 
-                <li className='todoItem' key={index} itemId={todo.id} active={this.state.curTodoId === todo.id ? 'yes' : 'no'} onClick={this.handleClick}>
+                <li className='todoItem' key={index} 
+                itemId={todo.id} active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
+                onDoubleClick={this.doubleClick}
+                onClick={this.handleClick}>
                   <span className='anchor' onClick={()=>{this.done(todo.id)}}></span>
                   {todo.value}
                 </li>

@@ -1,0 +1,79 @@
+.sideBar {
+    width: 20%;
+    height: 100%;
+    position: relative;
+
+}
+.title {
+    padding: 10px 40px;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
+.title .check{
+    position: absolute;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border: 1px solid #ccc;
+    top: 12px;
+    left: 15px;
+    border-radius: 3px;
+}
+
+.content {
+    padding: 10px 40px;
+    position: relative;
+    height: 100%;
+}
+
+.content > i {
+    position: absolute;
+    top: 12px;
+    left: 13px;
+}
+
+.content > i > svg {
+    width: 20px;
+    height: 20px;
+    color: #ccc;
+}
+
+.content textarea {
+    width: 100%;
+    resize: none;
+    height: calc(100% - 100px);
+    border: none;
+    /* border-bottom: 1px solid #ccc; */
+}
+.content textarea:focus{
+    outline: none;
+}
+
+/* .content>input[type='text'] {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+
+.content>input[type='text']:focus{
+    outline: none;
+} */
+
+.footOperators{
+    border-top: 1px solid #ccc; 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #999;
+}
+
+.footOperators svg {
+    width: 20px;
+    height: 20px;
+}
