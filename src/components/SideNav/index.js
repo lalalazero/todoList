@@ -30,14 +30,6 @@ export default class SideNav extends Component {
         this.queryUserLists()
     }
 
-    /*
-    查询计划清单的todo
-     */
-    queryInboxItems = ()=>{
-
-    }
-    
-
     // 查询用户创建的清单
     queryUserLists = () => {
         const userid = localStorage.getItem('userId')
@@ -53,6 +45,7 @@ export default class SideNav extends Component {
                 })
                 if(this.inboxList !== -1){
                     this.props.queryListItems(this.inboxList, 0)
+                    this.props.updateCurList(this.inboxList)
                 }
                 this.setState({
                     list: userList
@@ -100,18 +93,21 @@ export default class SideNav extends Component {
             curList: item.id
         })
         console.log(this.props)
-        const { queryListItems, updateCurList } = this.props
+        const { queryListItems, updateCurList, queryComplete} = this.props
         updateCurList(item.id)
-        //queryListItems(item.id, 0)
+        queryListItems(item.id, 0)
+        // queryComplete(item.id, 1)
+
 
     }
     clickDefaultList = (e) => {
         this.setState({
             curList: -1
         })
-        const {  queryListItems, updateCurList } = this.props
+        const {  queryListItems, updateCurList, queryComplete } = this.props
         updateCurList(this.inboxList)
-        //queryListItems(this.inboxList, 0)
+        queryListItems(this.inboxList, 0)
+        // queryComplete(this.inboxList, 1)
     }
 
     render(){

@@ -6,6 +6,7 @@ import Register from './routes/Register'
 import Home from './routes/Home'
 import { request } from './utils/request'
 import './App.css';
+import { notification } from 'antd';
 
 class App extends Component {
   constructor(props){
@@ -14,13 +15,29 @@ class App extends Component {
       todoList: [
         
       ],
-      curList: -1
+      completeList: [
+
+      ],
+      curList: -1,
+      showComplete: false
+    }
+  }
+
+  handleShowComplete = () => {
+    const show = !this.state.showComplete
+    this.setState({
+      showComplete: show
+    })
+    if(show){
+      this.queryComplete(this.curList, 1)
     }
   }
 
   updateCurList = (listId)=>{
     this.setState({
-      curList: listId
+      curList: listId,
+      showComplete: false,
+      completeList: []
     })
   }
 
@@ -34,42 +51,36 @@ class App extends Component {
     })
 }
 
+queryComplete = ()=>{
+    request(`lists/items?id=${this.state.curList}&type=1`)
+    .then(res => {
+      console.log('查询到清单的item。。',res)
+      this.setState({
+        completeList: res.data,
+      })})
+}
 
-  addTodoItem = (item)=>{
-    item.id = this.state.todoList.length + 1;
-    this.state.todoList.push(item)
-    this.setState({
-      todoList: this.state.todoList
-    })
+
+  addTodoItem = (value)=>{
+    request(`lists/items?id=${this.state.curList}&value=${value}`,{ method: 'POST' }).then(res=>this.refreshTodos(res))
+    
   }
   updateTodoStatus = (item, status) => {
-    let nList = _.cloneDeep(this.state.todoList)
-    let todo = nList.filter(obj => obj.id === item.id)[0]
-    let index = nList.indexOf(todo)
-    if(index >= 0) {
-      nList[index].isComplete = status
-      this.setState({
-        todoList: nList
-      })
-    }else{
-      console.log('cannot find ' + item)
-    }
+    request(`lists/items/status?id=${item.id}&status=${status}`,{ method: 'PUT'}).then(res=>this.refreshTodos(res))
       
   }
-  deleteTodo = (item) => {
-    let nList = _.cloneDeep(this.state.todoList)
-    let todo = nList.filter(obj => obj.id === item.id)[0]
-    let index = nList.indexOf(todo)
-    if(index >= 0) {
-      nList.splice(index,1)
-      this.setState({
-        todoList: nList
-      })
+  deleteTodo = (id) => {
+    request(`lists/items?id=${id}`,{ method: 'DELETE' }).then(this.refreshTodos)
+  }
+
+  refreshTodos = (res) => {
+    console.log('refresh...',res)
+    if(res.status === 0){
+      this.queryListItems(this.state.curList, 0)
+      this.queryComplete(this.curList,1)
     }else{
-      console.log('cannot find ' + item)
+      notification.error(res.msg)
     }
-    
-    
   }
 
   myRender = (props)=>{
@@ -80,9 +91,13 @@ class App extends Component {
       deleteTodo={this.deleteTodo}
       updateTodoStatus={this.updateTodoStatus}
       todoList={this.state.todoList}
+      completeList={this.state.completeList}
       queryListItems={this.queryListItems}
       curList={this.state.curList}
       updateCurList={this.updateCurList}
+      queryComplete={this.queryComplete}
+      handleShowComplete={this.handleShowComplete}
+      showComplete={this.state.showComplete}
       {...props}></Home>
     )
   }

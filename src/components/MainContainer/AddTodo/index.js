@@ -10,14 +10,10 @@ class AddTodo extends Component {
       }
     }
     addTodo = ()=>{
-      // const { addTodoItem } = this.props
-      // let value = this.input.current.value
-      // let todoItem = {
-      //   value: value,
-      //   isComplete: false
-      // }
-      // addTodoItem(todoItem)
-      // this.input.current.value = ''
+      const { addTodoItem } = this.props
+      let value = this.input.current.value
+      addTodoItem(value)
+      this.input.current.value = ''
     }
     handleKeydown = (e) => {
       if(e.keyCode === 13){ // 回车键

@@ -19,10 +19,11 @@ export default class MainContainer extends Component {
             <header>计划</header>
             <div>
                 <AddTodo addTodoItem={addTodoItem}></AddTodo>
-                <TodoItem 
-                    handleDelete={deleteTodo} 
-                    handleUpdate={updateTodoStatus} 
-                    todoList={todoList}>
+                <TodoItem
+                handleDelete={deleteTodo} 
+                handleUpdate={updateTodoStatus} 
+                todoList={todoList}
+                 {...this.props}>
                 </TodoItem>
             </div>
             
@@ -31,10 +32,3 @@ export default class MainContainer extends Component {
     }  
 }
 
-MainContainer.propTypes = {
-    addTodoItem: PropTypes.func.isRequired,
-    deleteTodo: PropTypes.func.isRequired,
-    updateTodoStatus: PropTypes.func.isRequired,
-    todoList: PropTypes.array.isRequired
-    
-}

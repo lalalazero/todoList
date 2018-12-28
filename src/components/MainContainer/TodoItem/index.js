@@ -6,36 +6,34 @@ export default class TodoItem extends Component {
     constructor(props){
       super(props)
       this.state = {
-        
+        showComplete: false
       }
     }
     done = (item) => {
       console.log('done..',item);
       const { handleUpdate } = this.props
-      handleUpdate(item, true)
+      handleUpdate(item, 1)
     }
     unDone = (item) => {
       console.log('undone...',item);
       const { handleUpdate } = this.props
-      handleUpdate(item, false)
+      handleUpdate(item, 0)
     }
     deleteItem = (item) => {
       console.log('delete item...', item)
       const { handleDelete } = this.props
       handleDelete(item)
     }
+    showComplete = ()=>{
+      const { handleShowComplete } = this.props
+      handleShowComplete()
+    }
     render() {
-      const { todoList } = this.props
-      const completeList = todoList.filter(todo => todo.done === 1)
-      const notCompleteList = todoList.filter(todo => todo.done === 0)
-
-      // const completeList = this.state.todoList.filter(todo => todo.isComplete === true)
-      // const notCompleteList = this.state.todoList.filter(todo => todo.isComplete === false)
-
+      const { todoList, completeList, showComplete } = this.props
       return (
         <ul className='todoItems'>
           {
-            notCompleteList.map((todo, index) => {
+            todoList.map((todo, index) => {
               return ( 
                 <li className='todoItem' key={index}>
                   <span className='anchor' onClick={()=>{this.done(todo)}}></span>
@@ -45,14 +43,18 @@ export default class TodoItem extends Component {
             })
           }
           {
-            completeList.map((todo, index) => {
+            <span className='showCompleteBtn' onClick={this.showComplete}>点击查看已完成的事项</span>
+          }
+          {
+            showComplete === true ? (completeList.map((todo, index) => {
               return (
                 <li className='todoItem done' key={index} >
                   <Icon type='check-square' onClick={()=>{this.unDone(todo)}}></Icon>
                   {todo.value}
                 </li>
               )
-            })
+            })) : ''
+            
           }
         </ul>
       )
