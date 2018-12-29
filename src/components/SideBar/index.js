@@ -29,7 +29,7 @@ export default class SideBar extends Component {
             console.log(sideItem)
             this.setState({
                 curItem: sideItem,
-                note: sideItem.note,
+                note: sideItem.note || '',
                 title: sideItem.value
             })
         }
@@ -52,13 +52,24 @@ export default class SideBar extends Component {
         const { updateTodo } = this.props
         updateTodo(this.state.curItem.id, this.state.title, this.state.curItem.note)
     }
+    done = ()=>{
+        const { updateTodoStatus } = this.props
+        updateTodoStatus(this.state.curItem.id, 1)
+    }
+    undone = ()=>{
+        const { updateTodoStatus } = this.props
+        updateTodoStatus(this.state.curItem.id, 0)
+    }
     render(){
         const { showSideBar} = this.props
         return (
             <div className='sideBar' style={ showSideBar === true ? { diplay: 'block' } : { display: 'none'}}>
                 <div className='title'>
                     {
-                        this.state.curItem.done === 0 ? <span className='check'></span> : <Icon type="check-square"></Icon>
+                        (this.state.curItem.done === 0 ? 
+                            <span onClick={this.done} className='check'></span> : 
+                            <Icon onClick={this.undone} type="check-square"></Icon>
+                        )
                     }
                     <textarea ref={this.textarea} value={this.state.title} maxLength={100}
                     onInput={this.resizeTitle} onBlur={this.updateTitle}

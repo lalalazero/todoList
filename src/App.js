@@ -96,6 +96,9 @@ queryComplete = ()=>{
     if(res.status === 0){
       this.queryListItems(this.state.curList, 0)
       this.queryComplete(this.curList,1)
+      if(this.state.showSideBar){
+        this.revealSideBar(this.state.sideItemId)
+      }
     }else{
       notification.error(res.msg)
     }
