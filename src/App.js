@@ -21,7 +21,8 @@ class App extends Component {
       curList: -1,
       showComplete: false,
       showSideBar: false,
-      sideItemId: -1
+      sideItemId: -1,
+      sideItem: {}
     }
   }
 
@@ -71,6 +72,21 @@ queryComplete = ()=>{
     request(`lists/items/status?id=${id}&status=${status}`,{ method: 'PUT'}).then(res=>this.refreshTodos(res))
       
   }
+  updateTodo = (id, title, note) => {
+    request(`lists/items`,{
+      method: 'PUT',
+      body: {
+        id: id,
+        title: title,
+        note: note
+      }
+    }).then(res=>{
+      if(res.status === 0){
+        this.refreshTodos(res)
+        this.revealSideBar(id)
+      }
+    })
+  }
   deleteTodo = (id) => {
     request(`lists/items?id=${id}`,{ method: 'DELETE' }).then(this.refreshTodos)
   }
@@ -92,11 +108,22 @@ queryComplete = ()=>{
   }
 
   revealSideBar = (id)=>{
+    this.fetchItem(id)
     this.setState({
       showSideBar: true,
-      sideItemId: id
+      sideItemId: id,
     })
   }
+
+  fetchItem = (id) => {
+    request(`lists/items/detail?id=${id}`).then(res => {
+        if(res.status === 0){
+            this.setState({
+                sideItem: res.data
+            })
+        }
+    })
+}
 
   myRender = (props)=>{
     return(
@@ -105,6 +132,7 @@ queryComplete = ()=>{
       addTodoItem={this.addTodoItem}
       deleteTodo={this.deleteTodo}
       updateTodoStatus={this.updateTodoStatus}
+      updateTodo={this.updateTodo}
       todoList={this.state.todoList}
       completeList={this.state.completeList}
       queryListItems={this.queryListItems}
@@ -117,6 +145,7 @@ queryComplete = ()=>{
       foldSideBar={this.foldSideBar}
       revealSideBar={this.revealSideBar}
       sideItemId={this.state.sideItemId}
+      sideItem={this.state.sideItem}
       {...props}></Home>
     )
   }
