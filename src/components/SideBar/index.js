@@ -8,8 +8,10 @@ export default class SideBar extends Component {
         super(props)
         this.state = {
             curItem: {},
-            note: ''
+            note: '',
+            title: ''
         }
+        this.textarea = React.createRef()
     }
     fold = ()=>{
         const { foldSideBar } = this.props
@@ -27,14 +29,28 @@ export default class SideBar extends Component {
             console.log(sideItem)
             this.setState({
                 curItem: sideItem,
-                note: sideItem.note
+                note: sideItem.note,
+                title: sideItem.value
             })
         }
     }
+    resizeTitle = ()=>{
+        const textarea = this.textarea.current
+        const parent = textarea.parentNode
+        let newHeight = textarea.scrollHeight + 20
+        console.log(textarea.scrollHeight, parent.clientHeight)
+        if(newHeight >= parent.clientHeight){
+            console.log('超过了')
+            parent.style.height = `${newHeight}px`
+        }
+    }
     updateNote = ()=>{
-        const newNote = this.state.note
         const { updateTodo } = this.props
-        updateTodo(this.state.curItem.id,this.state.curItem.value,newNote)
+        updateTodo(this.state.curItem.id,this.state.curItem.value,this.state.note)
+    }
+    updateTitle = () => {
+        const { updateTodo } = this.props
+        updateTodo(this.state.curItem.id, this.state.title, this.state.curItem.note)
     }
     render(){
         const { showSideBar} = this.props
@@ -44,8 +60,10 @@ export default class SideBar extends Component {
                     {
                         this.state.curItem.done === 0 ? <span className='check'></span> : <Icon type="check-square"></Icon>
                     }
-                    <span>{this.state.curItem.value}
-                    </span>
+                    <textarea ref={this.textarea} value={this.state.title} maxLength={100}
+                    onInput={this.resizeTitle} onBlur={this.updateTitle}
+                    onChange={event => this.setState({ title: event.target.value })}>
+                    </textarea>
                 </div>
                 <div className='content'>
                     <Icon type='edit'></Icon>
@@ -53,6 +71,7 @@ export default class SideBar extends Component {
                     onChange={event => this.setState({ note: event.target.value })}
                     onBlur={this.updateNote}
                     value={this.state.note}>
+                    maxLength={100}
                     </textarea>
                 </div>
                 <div className='footOperators'>

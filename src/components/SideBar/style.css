@@ -11,6 +11,16 @@
     font-weight: bold;
     font-size: 18px;
 }
+.title textarea {
+    border: none;
+    resize: none;
+    color: #262626;
+    height: 100%;
+}
+.title textarea:focus {
+    outline: none;
+}
+
 .title .check{
     position: absolute;
     display: inline-block;
