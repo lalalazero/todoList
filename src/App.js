@@ -21,6 +21,7 @@ class App extends Component {
       curList: -1,
       showComplete: false,
       showSideBar: false,
+      sideItemId: -1
     }
   }
 
@@ -90,9 +91,10 @@ queryComplete = ()=>{
     })
   }
 
-  revealSideBar = ()=>{
+  revealSideBar = (id)=>{
     this.setState({
-      showSideBar: true
+      showSideBar: true,
+      sideItemId: id
     })
   }
 
@@ -114,6 +116,7 @@ queryComplete = ()=>{
       showSideBar={this.state.showSideBar}
       foldSideBar={this.foldSideBar}
       revealSideBar={this.revealSideBar}
+      sideItemId={this.state.sideItemId}
       {...props}></Home>
     )
   }

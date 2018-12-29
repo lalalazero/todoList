@@ -104,17 +104,24 @@ export default class TodoItem extends Component {
     }
 
     handleClick = (e)=>{
+      let id = e.target.getAttribute('itemId') - 0
       console.log(e.target.getAttribute('itemId'))
       this.setState({
-        curTodoId: e.target.getAttribute('itemId') - 0
+        curTodoId: id
       })
+      const { showSideBar, revealSideBar } = this.props
+      if(showSideBar){
+        revealSideBar(id)
+      }
+
     }
     doubleClick = (e) => {
+      let id = e.target.getAttribute('itemId') - 0
       this.setState({
-        curTodoId: e.target.getAttribute('itemId') - 0
+        curTodoId: id
       })
       const { revealSideBar } = this.props
-      revealSideBar()
+      revealSideBar(id)
     }
 
     render() {
@@ -140,7 +147,11 @@ export default class TodoItem extends Component {
           {
             showComplete === true ? (completeList.map((todo, index) => {
               return (
-                <li className='todoItem done' key={index} itemId={todo.id}>
+                <li className='todoItem done' key={index}
+                active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
+                onClick={this.handleClick}
+                onDoubleClick={this.doubleClick}
+                itemId={todo.id}>
                   <Icon type='check-square' onClick={()=>{this.unDone(todo.id)}}></Icon>
                   {todo.value}
                 </li>

@@ -93,10 +93,11 @@ export default class SideNav extends Component {
             curList: item.id
         })
         console.log(this.props)
-        const { queryListItems, updateCurList, queryComplete} = this.props
+        const { queryListItems, updateCurList, foldSideBar} = this.props
         updateCurList(item.id)
         queryListItems(item.id, 0)
-        // queryComplete(item.id, 1)
+        foldSideBar()
+
 
 
     }
@@ -104,10 +105,10 @@ export default class SideNav extends Component {
         this.setState({
             curList: -1
         })
-        const {  queryListItems, updateCurList, queryComplete } = this.props
+        const {  queryListItems, updateCurList, foldSideBar } = this.props
         updateCurList(this.inboxList)
         queryListItems(this.inboxList, 0)
-        // queryComplete(this.inboxList, 1)
+        foldSideBar()
     }
 
     render(){

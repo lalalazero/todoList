@@ -9,6 +9,7 @@
     position: relative;
     border-bottom: 1px solid #ccc;
     font-weight: bold;
+    font-size: 18px;
 }
 .title .check{
     position: absolute;
@@ -16,9 +17,19 @@
     width: 17px;
     height: 17px;
     border: 1px solid #ccc;
-    top: 12px;
+    top: 15px;
     left: 15px;
     border-radius: 3px;
+}
+
+.title > i {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+}
+.title > i > svg {
+    width: 20px;
+    height: 20px;
 }
 
 .content {

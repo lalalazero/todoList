@@ -1,27 +1,38 @@
 import React, { Component } from 'react'
 import { Icon } from 'antd'
+import { request } from '../../utils/request'
 import './style.css'
 
 export default class SideBar extends Component {
     constructor(props){
         super(props)
         this.state = {
-            
+            todo: {}
         }
     }
     fold = ()=>{
         const { foldSideBar } = this.props
         foldSideBar()
     }
+    fetchItem = (id) => {
+        request(`lists/items/detail?id=${id}`).then(res => {
+            if(res.status === 0){
+                this.setState({
+                    todo: res.data
+                })
+            }
+        })
+    }
     render(){
-        const { showSideBar } = this.props
+        const { showSideBar, sideItemId  } = this.props
+        this.fetchItem(sideItemId)
         return (
             <div className='sideBar' style={ showSideBar === true ? { diplay: 'block' } : { display: 'none'}}>
                 <div className='title'>
-                    <span className='check'></span>
-                    <span>很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字
-                    很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字
-                    很多字很多字很多字
+                    {
+                        this.state.todo.done === 0 ? <span className='check'></span> : <Icon type="check-square"></Icon>
+                    }
+                    <span>{this.state.todo.value}
                     </span>
                 </div>
                 <div className='content'>

@@ -30,6 +30,9 @@
     background: #ccc;
     opacity: .5;
 }
+.todoItem.done[active='yes'] {
+    background: #d7ecfa;
+}
 .todoItem.done svg {
     width: 17px;
     height: 17px;
