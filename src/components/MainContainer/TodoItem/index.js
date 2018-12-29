@@ -71,32 +71,24 @@ export default class TodoItem extends Component {
     }
 
     contextClick(type){
+      this.setState({
+        contextShow: false
+      })
       switch(type){
         case 1: { // 标记已完成
           this.done(this.curTodoId)
-          this.setState({
-            contextShow: false
-          })
           break
         }
         case 2: { // 标记未完成
           this.unDone(this.curTodoId)
-          this.setState({
-            contextShow: false
-          })
           break
         }
         case 3: { // 修改事项
-          this.setState({
-            contextShow: false
-          })
+          this.props.revealSideBar(this.curTodoId)
           break
         }
         case 4: { // 删除事项
           this.deleteItem(this.curTodoId)
-          this.setState({
-            contextShow: false
-          })
           break
         }
         default: break

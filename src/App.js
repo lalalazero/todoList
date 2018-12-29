@@ -88,7 +88,14 @@ queryComplete = ()=>{
     })
   }
   deleteTodo = (id) => {
-    request(`lists/items?id=${id}`,{ method: 'DELETE' }).then(this.refreshTodos)
+    request(`lists/items?id=${id}`,{ method: 'DELETE' })
+    .then(res => {
+      if(this.state.showSideBar){
+        this.setState({
+          showSideBar: false
+        })
+      }
+      this.refreshTodos(res)})
   }
 
   refreshTodos = (res) => {
