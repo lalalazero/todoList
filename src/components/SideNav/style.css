@@ -66,11 +66,24 @@
     transform: rotate(90deg);
     color: green;
 }
-.list > li span {
+.list > li span{
     padding: 0 6px;
     font-size: 15px;
 }
+.list > li span[name='count'] {
+    /* color: red; */
+    position: absolute;
+    right: 10px;
+}
 
+.list > li .icon-edit {
+    position: absolute;
+    right: 35px;
+    visibility: hidden;
+}
+.list > li[curList='yes'] .icon-edit {
+    visibility: visible;
+}
 .list > li.schedule {
     color: #328ad6;
 }

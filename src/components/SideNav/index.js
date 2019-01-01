@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, message } from 'antd';
 import './style.css';
+import './iconFont.css';
 import { request } from '../../utils/request'
 
 export default class SideNav extends Component {
@@ -127,6 +128,10 @@ export default class SideNav extends Component {
         foldSideBar()
     }
 
+    updateList = ()=>{
+        alert('update list...')
+    }
+
     render(){
         const unfoldNav = () => {
             return(
@@ -150,6 +155,8 @@ export default class SideNav extends Component {
                                     <li key={i} onClick={() => this.handleListClick(item)} curlist={this.state.curList === item.id ? 'yes' : 'no'}>
                                         <Icon type='bars'></Icon>
                                         <span>{ item.name }</span>
+                                        <i className='iconfont icon-edit' onClick={this.updateList}></i>
+                                        <span name='count'>{ item.validCount > 0 ? item.validCount : ''}</span>
                                     </li>
                                 )
                             })
