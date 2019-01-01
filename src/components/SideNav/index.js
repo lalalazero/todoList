@@ -12,7 +12,8 @@ export default class SideNav extends Component {
             list: [],
             modalVisible: false,
             newListName: '',
-            curList: -1
+            curList: -1,
+            btnDisabled: true,
         }
         this.inboxList = -1
     }
@@ -71,6 +72,7 @@ export default class SideNav extends Component {
     }
 
     saveList = () => {
+        if(this.state.btnDisabled) return
         const userid = localStorage.getItem('userId')
         const name = this.state.newListName;
         request(`lists?userid=${userid}&name=${name}`,{ method: 'POST'}).then(res => {
@@ -85,6 +87,20 @@ export default class SideNav extends Component {
                 message.error(res.msg)
             }
         })
+    }
+
+    checkEmpty = (e)=>{
+        const value = e.target.value
+        if(value.trim() === ''){
+            this.setState({
+                btnDisabled: true
+            })
+        }else{
+            this.setState({
+                btnDisabled: false
+            })
+        }
+        
     }
 
     handleListClick = (item)=>{
@@ -184,10 +200,10 @@ export default class SideNav extends Component {
                 <div className="createListModalBg" style={ this.state.modalVisible === true ? { display: 'block' } : { display: 'none'}}>
                     <div className="createListModal">
                         <h2>创建新的清单</h2>
-                        <input type='text' value={this.state.newListName} placeholder='清单名字' onChange={(e)=> this.setState({ newListName: e.target.value})}></input>
+                        <input type='text' value={this.state.newListName} placeholder='清单名字' onInput={e => this.checkEmpty(e)} onChange={(e)=> this.setState({ newListName: e.target.value})}></input>
                         <div>
                             <button onClick={this.hideModal}>取消</button>
-                            <button onClick={this.saveList}>保存</button>
+                            <button style={this.state.btnDisabled === true ? {color: '#ccc'} : {}} onClick={this.saveList}>保存</button>
                         </div>
                         
                     </div>
