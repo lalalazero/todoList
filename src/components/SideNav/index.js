@@ -15,6 +15,9 @@ export default class SideNav extends Component {
             newListName: '',
             curList: -1,
             btnDisabled: true,
+            updateModalVisible: false,
+            curName: '',
+            editBtnDisabled: false,
         }
         this.inboxList = -1
     }
@@ -103,11 +106,34 @@ export default class SideNav extends Component {
         }
         
     }
+    checkEditEmpty = (e) => {
+        const value = e.target.value
+        console.log(value)
+        if(value.trim() === ''){
+            this.setState({
+                editBtnDisabled: true
+            })
+        }else{
+            this.setState({
+                editBtnDisabled: false
+            })
+        }
+    }
+    editClick = ()=>{
+        if(this.state.editBtnDisabled) return
+        // TODO
+        alert('todo editList')
+    }
+
+    deleteList = ()=>{
+        alert('todo..delete list')
+    }
 
     handleListClick = (item)=>{
         console.log('list clicked...',item)
         this.setState({
-            curList: item.id
+            curList: item.id,
+            curName: item.name
         })
         console.log(this.props)
         const { queryListItems, updateCurList, foldSideBar} = this.props
@@ -129,7 +155,10 @@ export default class SideNav extends Component {
     }
 
     updateList = ()=>{
-        alert('update list...')
+        this.setState({
+            updateModalVisible: true,
+            editBtnDisabled: false
+        })
     }
 
     render(){
@@ -213,6 +242,19 @@ export default class SideNav extends Component {
                             <button style={this.state.btnDisabled === true ? {color: '#ccc'} : {}} onClick={this.saveList}>保存</button>
                         </div>
                         
+                    </div>
+                </div>
+                <div className="updateListModalBg" style={ this.state.updateModalVisible === true ? {display: 'block'}: { display: 'none'}}>
+                    <div className="updateListModal">
+                        <h2>编辑清单</h2>
+                        <input type='text' value={this.state.curName}
+                            onChange={e => { this.setState({curName: e.target.value}); this.checkEditEmpty(e)}}
+                        ></input>
+                        <div>
+                            <button onClick={()=> this.setState({ updateModalVisible: false })}>取消</button>
+                            <button onClick={this.editClick} style={this.state.editBtnDisabled === true ? {color: '#ccc'} : {}}>修改</button>
+                            <button onClick={this.deleteList}>删除清单</button>
+                        </div>
                     </div>
                 </div>
            </div>
