@@ -7,6 +7,7 @@ import Home from './routes/Home'
 import { request } from './utils/request'
 import './App.css';
 import { notification } from 'antd';
+import { connect } from 'react-redux'
 
 class App extends Component {
   constructor(props){
@@ -163,7 +164,16 @@ queryComplete = ()=>{
   
 
   render() {
-    const x = () => <h2>xxxxxx</h2>
+    const x = () => <div><h2><span>这是通过state拿到的东西 == {this.props.n}</span>xxxxxx<button onClick={()=>{
+      const userid = localStorage.getItem('userId')
+        request(`lists?userid=${userid}`).then(res => {
+          this.props.todo11(res.data)
+        })
+    }}>查询用户list</button></h2><div>{
+      this.props.todos.map((item, index) => {
+        return <li key={index}>{item.name}</li>
+      })
+    }</div></div>
     return (
         <Router>
           <div className='layout'>
@@ -179,4 +189,17 @@ queryComplete = ()=>{
   }
 }
 
-export default App;
+function xxx(state){
+  return({
+    n: state.n,
+    todos: state.todos
+  })
+}
+
+function yyy(dispatch, ownProperties){
+  return({
+    'todo11': (data) => dispatch({type: 'todos', payload: data})
+  })
+}
+
+export default connect(xxx,yyy)(App);
