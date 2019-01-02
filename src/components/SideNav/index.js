@@ -3,14 +3,14 @@ import { Icon, message, notification } from 'antd';
 import './style.css';
 import './iconFont.css';
 import { request } from '../../utils/request'
+import { connect } from 'react-redux'
 
-export default class SideNav extends Component {
+class SideNav extends Component {
 
     constructor(props){
         super(props)
         this.state = {
             fold: false,
-            list: [],
             modalVisible: false,
             newListName: '',
             curList: -1,
@@ -33,6 +33,7 @@ export default class SideNav extends Component {
 
     componentDidMount(){
         this.queryUserLists()
+        
     }
 
     // 查询用户创建的清单
@@ -52,9 +53,7 @@ export default class SideNav extends Component {
                     this.props.queryListItems(this.inboxList, 0)
                     this.props.updateCurList(this.inboxList)
                 }
-                this.setState({
-                    list: userList
-                })
+                this.props.loadLists(userList)
             }
         })
     }
@@ -160,6 +159,7 @@ export default class SideNav extends Component {
         updateCurList(item.id)
         queryListItems(item.id, 0)
         foldSideBar()
+        this.props.switchList(item.id)
 
 
 
@@ -199,7 +199,7 @@ export default class SideNav extends Component {
                             <span>计划</span>
                         </li>
                         {
-                            this.state.list.map((item, i) => {
+                            this.props.lists.map((item, i) => {
                                 return (
                                     <li key={i} onClick={() => this.handleListClick(item)} curlist={this.state.curList === item.id ? 'yes' : 'no'}>
                                         <Icon type='bars'></Icon>
@@ -281,3 +281,29 @@ export default class SideNav extends Component {
         )
     }
 }
+
+function xxx(state){
+    return({
+        todos: state.todos,
+        lists: state.lists
+    })
+}
+
+function yyy(dispatch, ownProperties){
+    return({
+        loadLists: (data)=>{
+            dispatch({
+                type: 'lists',
+                payload: data
+            }) 
+        },
+        switchList:(listId)=>{
+            dispatch({
+                type: 'switchList',
+                payload: listId
+            })
+        }
+    })
+}
+
+export default connect(xxx,yyy)(SideNav)

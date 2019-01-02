@@ -78,7 +78,7 @@
 
 .list > li .icon-edit {
     position: absolute;
-    right: 35px;
+    right: 45px;
     visibility: hidden;
 }
 .list > li[curList='yes'] .icon-edit {

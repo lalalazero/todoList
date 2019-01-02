@@ -2,9 +2,9 @@ import React , { Component } from 'react'
 import AddTodo from './AddTodo'
 import TodoItem from './TodoItem'
 import './style.css'
+import { connect } from 'react-redux'
 
-
-export default class MainContainer extends Component {
+class MainContainer extends Component {
     render(){
         const {
             addTodoItem,
@@ -14,7 +14,7 @@ export default class MainContainer extends Component {
         } = this.props
         return (
             <section className='mainContainer'>
-            <header>计划</header>
+            <header>{this.props.curList.name || '计划'} </header>
             <div>
                 <AddTodo addTodoItem={addTodoItem}></AddTodo>
                 <TodoItem
@@ -29,4 +29,11 @@ export default class MainContainer extends Component {
         )
     }  
 }
+
+function xxx(state){
+    return({
+        curList: state.curList
+    })
+}
+export default connect(xxx, null)(MainContainer)
 

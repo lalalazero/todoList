@@ -1,6 +1,8 @@
 import React,  { Component } from 'react'
 import { Icon } from 'antd';
 import './style.css'
+import { connect } from 'react-redux'
+
 class AddTodo extends Component {
     constructor(props){
       super(props)
@@ -13,6 +15,7 @@ class AddTodo extends Component {
       const { addTodoItem } = this.props
       let value = this.input.current.value
       addTodoItem(value)
+      this.props.addTodo(this.props.listId, +1)
       this.input.current.value = ''
     }
     handleKeydown = (e) => {
@@ -34,4 +37,24 @@ class AddTodo extends Component {
     }
 }
 
-export default AddTodo
+function xxx(state){
+  return({
+    listId: state.curList.id
+  })
+}
+
+function yyy(dispatch, ownProperties){
+  return({
+    'addTodo': (listId, count) => {
+      dispatch({
+        type: 'updateTodoNumbers',
+        payload: {
+          listId: listId,
+          count: count
+        }
+      })
+    }
+  })
+}
+
+export default connect(xxx,yyy)(AddTodo)
