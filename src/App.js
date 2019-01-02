@@ -189,14 +189,14 @@ queryComplete = ()=>{
   }
 }
 
-function xxx(state){
+function xxx(state){ // mapStateToProperties
   return({
     n: state.n,
     todos: state.todos
   })
 }
 
-function yyy(dispatch, ownProperties){
+function yyy(dispatch, ownProperties){ // mapDispatchToProperties
   return({
     'todo11': (data) => dispatch({type: 'todos', payload: data})
   })
