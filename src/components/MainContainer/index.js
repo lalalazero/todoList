@@ -1,7 +1,6 @@
 import React , { Component } from 'react'
 import AddTodo from './AddTodo'
 import TodoItem from './TodoItem'
-import PropTypes from 'prop-types'
 import './style.css'
 
 
