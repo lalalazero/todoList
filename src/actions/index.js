@@ -15,4 +15,14 @@ const updateTodoNumbers = (listId,count) => {
     })
 }
 
-export default switchList;
+const setSelectItem = (itemId) => {
+    return({
+        type: 'setSelectItem',
+        payload: itemId
+    })
+}
+export default {
+    switchList,
+    updateTodoNumbers,
+    setSelectItem
+}

@@ -4,6 +4,7 @@ import './style.css';
 import './iconFont.css';
 import { request } from '../../utils/request'
 import { connect } from 'react-redux'
+import switchList from './../../actions'
 
 class SideNav extends Component {
 
@@ -182,8 +183,7 @@ class SideNav extends Component {
     }
 
     render(){
-        const unfoldNav = () => {
-            return(
+        const unfoldNav = (
                 <div className='sideNav'>
                     <div className='menuBar'>
                         <Icon className='menuIcon' type='menu-unfold' onClick={this.foldNavBar}></Icon>
@@ -217,11 +217,10 @@ class SideNav extends Component {
                     </div>
                 </div>
 
-            )
-        }
+        )
+        
 
-        const foldNav = () => {
-            return(
+        const foldNav = (
                 <div className='sideNav fold'>
                     <div className='menuBar'>
                         <Icon className='menuIcon' type='menu-unfold' onClick={this.foldNavBar}></Icon>
@@ -245,13 +244,13 @@ class SideNav extends Component {
                         <Icon type='plus'></Icon>
                     </div>
                 </div>
-            )
-        }
+        )
+        
 
         return(
            <div style={{height: '100%', display: 'inline'}}>
                 {
-                    this.state.fold === true ? foldNav() : unfoldNav()
+                    this.state.fold === true ? foldNav : unfoldNav
                 }
                 <div className="createListModalBg" style={ this.state.modalVisible === true ? { display: 'block' } : { display: 'none'}}>
                     <div className="createListModal">

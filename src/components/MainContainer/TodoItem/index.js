@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Icon } from 'antd'
+import { connect } from 'react-redux'
 import './style.css'
-
-export default class TodoItem extends Component {
+class TodoItem extends Component {
     constructor(props){
       super(props)
       this.state = {
@@ -15,13 +15,15 @@ export default class TodoItem extends Component {
     }
     done = (id) => {
       console.log('done..',id);
-      const { handleUpdate } = this.props
+      const { handleUpdate, updateNumber } = this.props
       handleUpdate(id, 1)
+      updateNumber(this.props.listId, -1)
     }
     unDone = (id) => {
       console.log('undone...',id);
-      const { handleUpdate } = this.props
+      const { handleUpdate, updateNumber } = this.props
       handleUpdate(id, 0)
+      updateNumber(this.props.listId, 1)
     }
     deleteItem = (id) => {
       console.log('delete item...', id)
@@ -118,6 +120,7 @@ export default class TodoItem extends Component {
 
     render() {
       const { todoList, completeList, showComplete } = this.props
+      // const { todos } = this.props
       return (
         <ul className='todoItems' onContextMenu={this.popMenu}>
           {
@@ -165,3 +168,27 @@ export default class TodoItem extends Component {
       )
     }
 }
+
+function xxx(state){
+  return({
+    listId: state.curList.id,
+    todos: state.todos
+  })
+}
+
+function yyy(dispatch, ownProperties){
+  return({
+    'updateNumber': (listId, count) => {
+      dispatch({
+        type: 'updateTodoNumbers',
+        payload: {
+          listId: listId,
+          count: count
+        }
+      })
+    }
+  })
+}
+
+export default connect(xxx,yyy)(TodoItem)
+
