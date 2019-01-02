@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, message } from 'antd';
+import { Icon, message, notification } from 'antd';
 import './style.css';
 import './iconFont.css';
 import { request } from '../../utils/request'
@@ -121,12 +121,32 @@ export default class SideNav extends Component {
     }
     editClick = ()=>{
         if(this.state.editBtnDisabled) return
-        // TODO
-        alert('todo editList')
+        this.setState({
+            updateModalVisible: false
+        })
+        const name = this.state.curName
+        const id = this.state.curList
+        request(`lists?id=${id}&name=${name}`,{ method: 'PUT' }).then(res => {
+            if(res.status === 0){
+                this.queryUserLists()
+            }else{
+                notification.error(res.msg)
+            }
+        })
     }
 
     deleteList = ()=>{
-        alert('todo..delete list')
+        this.setState({
+            updateModalVisible: false
+        })
+        request(`lists?id=${this.state.curList}`,{ method: 'DELETE' }).then(res => {
+            if(res.status === 0){
+                //window.location.reload()
+                this.queryUserLists()
+            }else{
+                notification.error(res.msg)
+            }
+        })
     }
 
     handleListClick = (item)=>{
