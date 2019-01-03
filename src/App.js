@@ -7,6 +7,7 @@ import Home from './routes/Home'
 import { request } from './utils/request'
 import './App.css';
 import { notification } from 'antd';
+import { connect } from 'react-redux'
 
 class App extends Component {
   constructor(props){
@@ -24,6 +25,21 @@ class App extends Component {
       sideItemId: -1,
       sideItem: {}
     }
+  }
+
+  componentDidMount(){
+    // const { x, dispatch } = this.props
+    // console.log('App did mount',x)
+    // // console.log(dispatch)
+    // const plainObjAction = {type: 'lalala',payload: 'xixixi'}
+
+    // const loadUserList = (userId) => dispatch => {
+    //   console.log('enter..loadUserList..')
+    //   return request(`lists?userid=${userId}`).then(res => dispatch({type: 'userListLoaded',payload: res.data}))
+    // }
+    // const userId = localStorage.getItem('userId')
+    // dispatch(loadUserList(userId))
+    console.log('app did mount..')
   }
 
   handleShowComplete = () => {
@@ -167,6 +183,12 @@ queryComplete = ()=>{
     return (
         <Router>
           <div className='layout'>
+            {/* <button onClick={this.props.loadUserList}>click to loadUserList</button>
+            <ul>
+              {this.props.userList.map((item, index) => {
+                return <li key={index}>{ item.name }</li>
+              })}
+            </ul> */}
             <Route path="/" exact component={x} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
@@ -178,5 +200,11 @@ queryComplete = ()=>{
     )
   }
 }
+function mapStateToProps(state){
+  return {
+    x: state.x || -1,
+    userList: state.userList || [{'name': 'empty'}]
+  }
+}
 
-export default App;
+export default connect(mapStateToProps)(App);

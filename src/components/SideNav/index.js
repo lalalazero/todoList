@@ -3,8 +3,10 @@ import { Icon, message, notification } from 'antd';
 import './style.css';
 import './iconFont.css';
 import { request } from '../../utils/request'
+import { connect } from 'react-redux'
+import { loadUserList } from './../../actions/list'
 
-export default class SideNav extends Component {
+class SideNav extends Component {
 
     constructor(props){
         super(props)
@@ -32,32 +34,35 @@ export default class SideNav extends Component {
     }
 
     componentDidMount(){
-        this.queryUserLists()
+        //this.queryUserLists()
+        console.log('sideNav did mount...')
+        const userId = localStorage.getItem('userId')
+        this.props.dispatch(loadUserList(userId))
     }
 
-    // 查询用户创建的清单
-    queryUserLists = () => {
-        const userid = localStorage.getItem('userId')
-        request(`lists?userid=${userid}`).then(res => {
-            if(res.status === 0){
-                let userList = [];
-                res.data.forEach(obj => {
-                    if(obj.userCreate === 1){
-                        userList.push(obj);
-                    }else if(obj.userCreate === 0 && obj.name === '计划'){
-                        this.inboxList = obj.id;
-                    }
-                })
-                if(this.inboxList !== -1){
-                    this.props.queryListItems(this.inboxList, 0)
-                    this.props.updateCurList(this.inboxList)
-                }
-                this.setState({
-                    list: userList
-                })
-            }
-        })
-    }
+    // // 查询用户创建的清单
+    // queryUserLists = () => {
+    //     const userid = localStorage.getItem('userId')
+    //     request(`lists?userid=${userid}`).then(res => {
+    //         if(res.status === 0){
+    //             let userList = [];
+    //             res.data.forEach(obj => {
+    //                 if(obj.userCreate === 1){
+    //                     userList.push(obj);
+    //                 }else if(obj.userCreate === 0 && obj.name === '计划'){
+    //                     this.inboxList = obj.id;
+    //                 }
+    //             })
+    //             if(this.inboxList !== -1){
+    //                 this.props.queryListItems(this.inboxList, 0)
+    //                 this.props.updateCurList(this.inboxList)
+    //             }
+    //             this.setState({
+    //                 list: userList
+    //             })
+    //         }
+    //     })
+    // }
 
 
      
@@ -199,8 +204,8 @@ export default class SideNav extends Component {
                             <span>计划</span>
                         </li>
                         {
-                            this.state.list.map((item, i) => {
-                                return (
+                            this.props.list.map((item, i) => {
+                                return ( item.userCreate === 1 &&
                                     <li key={i} onClick={() => this.handleListClick(item)} curlist={this.state.curList === item.id ? 'yes' : 'no'}>
                                         <Icon type='bars'></Icon>
                                         <span>{ item.name }</span>
@@ -281,3 +286,11 @@ export default class SideNav extends Component {
         )
     }
 }
+
+function mapStateToProps(state){
+    return{
+        list: state.userList || []
+    }
+}
+
+export default connect(mapStateToProps)(SideNav)
