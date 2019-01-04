@@ -3,8 +3,8 @@ import { Component } from 'react'
 import SideNav from '../../components/SideNav'
 import MainContainer from '../../components/MainContainer'
 import SideBar from '../../components/SideBar'
-
-export default class Home extends Component{
+import { connect } from 'react-redux'
+class Home extends Component{
   render(){
     return(
       <div style={{height: '100%', display: 'flex'}}>
@@ -14,5 +14,6 @@ export default class Home extends Component{
       </div>
     );
   }
-    
 }
+
+export default Home;

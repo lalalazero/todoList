@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { Icon } from 'antd'
 import { connect } from 'react-redux'
-import { setCompleteVisibility } from './../../../actions/list'
-import { loadListComplete, checkTodo, deleteTodo } from './../../../actions/todo'
+import { setCompleteVisibility,setContentVisibility } from './../../../actions/list'
+import { loadListComplete, checkTodo, deleteTodo, setCurrentTodo } from './../../../actions/todo'
 import './style.css'
-import { timingSafeEqual } from 'crypto';
 
 class TodoItem extends Component {
     constructor(props){
@@ -16,21 +15,6 @@ class TodoItem extends Component {
       }
       this.curTodoId = -1
 
-    }
-    done = (id) => {
-      console.log('done..',id);
-      const { handleUpdate } = this.props
-      handleUpdate(id, 1)
-    }
-    unDone = (id) => {
-      console.log('undone...',id);
-      const { handleUpdate } = this.props
-      handleUpdate(id, 0)
-    }
-    deleteItem = (id) => {
-      console.log('delete item...', id)
-      const { handleDelete } = this.props
-      handleDelete(id)
     }
     
 
@@ -47,14 +31,14 @@ class TodoItem extends Component {
       if(e.target.nodeName.toLowerCase() !== 'li'){
         return;
       }
-      let id = e.target.getAttribute('itemID')
+      let id = e.target.getAttribute('itemID') - 0
       this.curTodoId = id
-      console.log(id)
+      // console.log(id)
       const { clientX, clientY } = e
       this.setState({
         contextShow: true
       })
-      console.log(clientX, clientY)
+      // console.log(clientX, clientY)
       let menu = document.querySelector('.contextMenu')
       menu.style.top = `${clientY}px`
       menu.style.left = `${clientX}px`
@@ -80,6 +64,7 @@ class TodoItem extends Component {
     }
 
     contextClick(type){
+      console.log('enter...',type)
       this.setState({
         contextShow: false
       })
@@ -93,7 +78,12 @@ class TodoItem extends Component {
           break
         }
         case 3: { // 修改事项
-          this.props.revealSideBar(this.curTodoId)
+          if(this.props.curTodo.id !== this.curTodoId){
+            this.props.dispatch(setCurrentTodo(this.curTodoId))
+          }
+          if(this.props.contentVisible === false){
+            this.props.dispatch(setContentVisibility(true))
+          }
           break
         }
         case 4: { // 删除事项
@@ -104,25 +94,23 @@ class TodoItem extends Component {
       }
     }
 
-    handleClick = (e)=>{
+    setActive = (e)=>{
       let id = e.target.getAttribute('itemID') - 0
       console.log(e.target.getAttribute('itemID'))
       this.setState({
         curTodoId: id
       })
-      const { showSideBar, revealSideBar } = this.props
-      if(showSideBar){
-        revealSideBar(id)
-      }
-
+      if(this.props.curTodo.id === id) return
+      console.log('i dispatch..')
+      this.props.dispatch(setCurrentTodo(id))
     }
     doubleClick = (e) => {
       let id = e.target.getAttribute('itemID') - 0
       this.setState({
         curTodoId: id
       })
-      const { revealSideBar } = this.props
-      revealSideBar(id)
+      if(this.props.contentVisible) return
+      this.props.dispatch(setContentVisibility(true))
     }
 
     render() {
@@ -135,7 +123,7 @@ class TodoItem extends Component {
                 <li className='todoItem' key={index} 
                 itemID={todo.id} active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
                 onDoubleClick={this.doubleClick}
-                onClick={this.handleClick}>
+                onClick={this.setActive}>
                   <span className='anchor' onClick={()=>this.props.dispatch(checkTodo(todo.id, 1))}></span>
                   {todo.value}
                 </li>
@@ -150,7 +138,7 @@ class TodoItem extends Component {
               return (
                 <li className='todoItem done' key={index}
                 active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
-                onClick={this.handleClick}
+                onClick={this.setActive}
                 onDoubleClick={this.doubleClick}
                 itemID={todo.id}>
                   <Icon type='check-square' onClick={()=>{this.props.dispatch(checkTodo(todo.id, 0))}}></Icon>
@@ -180,7 +168,9 @@ function mapStateToProps(state){
     todoItems: state.todoItems,
     completeItems: state.completeItems,
     curListId: state.curListId,
-    visible: state.visible
+    visible: state.visible,
+    curTodo: state.curTodo,
+    contentVisible: state.contentVisible
   }
 }
 export default connect(mapStateToProps)(TodoItem)

@@ -1,4 +1,4 @@
-import { SWITCH_LIST, USER_LIST_LOADED,SET_VISIBILITY } from './../actions/list'
+import { SWITCH_LIST, USER_LIST_LOADED,SET_VISIBILITY, SET_CONTENT_VISIBILITY } from './../actions/list'
 
 import { LIST_TODO_LOADED, LIST_COMPLETE_LOADED, SET_CURRENT_TODO } from './../actions/todo'
 
@@ -11,7 +11,8 @@ const initState = {
     completeItems: [],
     curListItem: {},
     visible: false,
-    curTodo: {}
+    curTodo: {},
+    contentVisible: false
 }
 
 export const reducers = (state = initState, action) => {
@@ -56,10 +57,28 @@ export const reducers = (state = initState, action) => {
             }
         }
         case SET_CURRENT_TODO: {
-            const curTodo = state.todoItems.find(obj => obj.id === action.payload)
+            let curTodo = state.todoItems.find(obj => obj.id === action.payload)
+            let count = 0
+            for(const p in curTodo) count++ // 空对象
+            if(count === 0){
+                const curComplete = state.completeItems.find(obj => obj.id === action.payload)
+                console.log('assgin..curComplete',JSON.stringify(Object.assign({},curComplete)))
+                return{
+                    ...state,
+                    curTodo: Object.assign({},curComplete)
+                }
+            }
+            console.log('assgin..curTodo',JSON.stringify(Object.assign({},curTodo)))
             return{
                 ...state,
                 curTodo: Object.assign({},curTodo)
+            }
+        }
+        case SET_CONTENT_VISIBILITY: {
+            console.log('...set content visibility...',action.payload)
+            return{
+                ...state,
+                contentVisible: action.payload
             }
         }
         default: return state

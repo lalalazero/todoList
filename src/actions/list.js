@@ -4,6 +4,7 @@ import { loadListTodos } from './todo'
 export const USER_LIST_LOADED = 'userList_loaded'
 export const SWITCH_LIST = 'switch_list'
 export const SET_VISIBILITY = 'set_visibility'
+export const SET_CONTENT_VISIBILITY = 'set_content_visibility'
 
 export const loadUserList = (userId) => async dispatch => {
     const res = await request(`lists?userid=${userId}`)
@@ -67,6 +68,7 @@ export const switchList = (listId) => async (dispatch) => {
     })
     dispatch(setCompleteVisibility(false))
     dispatch(loadListTodos(listId))
+    dispatch(setContentVisibility(false))
 }
 
 
@@ -74,6 +76,13 @@ export const switchList = (listId) => async (dispatch) => {
 export const setCompleteVisibility = (visibility) => dispatch => {
     dispatch({
         type: SET_VISIBILITY,
+        payload: visibility
+    })
+}
+
+export const setContentVisibility = (visibility) => dispatch => {
+    dispatch({
+        type: SET_CONTENT_VISIBILITY,
         payload: visibility
     })
 }
