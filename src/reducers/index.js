@@ -1,15 +1,17 @@
-import { SWITCH_LIST, USER_LIST_LOADED,LIST_TODO_LOADED, LIST_COMPLETE_LOADED } from './../actions/list'
+import { SWITCH_LIST, USER_LIST_LOADED,SET_VISIBILITY } from './../actions/list'
+
+import { LIST_TODO_LOADED, LIST_COMPLETE_LOADED, SET_CURRENT_TODO } from './../actions/todo'
 
 
 const initState = {
     x: -1,
     userList: [],
     curListId: 0,
-    curListItem: {
-        name:''
-    },
     todoItems: [],
-    completeItems: []
+    completeItems: [],
+    curListItem: {},
+    visible: false,
+    curTodo: {}
 }
 
 export const reducers = (state = initState, action) => {
@@ -21,11 +23,11 @@ export const reducers = (state = initState, action) => {
             }
         }
         case SWITCH_LIST: {
-            const list = state.userList.find(obj => obj.id === action.payload)
+            const curListItem = state.userList.find(obj => obj.id === action.payload)
             return{
                 ...state,
                 curListId: action.payload,
-                curListItem: list
+                curListItem: Object.assign({},curListItem)
             }
         }
         case LIST_TODO_LOADED: {
@@ -38,6 +40,26 @@ export const reducers = (state = initState, action) => {
             return{
                 ...state,
                 completeItems: action.payload
+            }
+        }
+        case SET_VISIBILITY: {
+            if(action.payload === false){
+                return{
+                    ...state,
+                    visible: action.payload,
+                    completeItems: []
+                }
+            }
+            return{
+                ...state,
+                visible: action.payload
+            }
+        }
+        case SET_CURRENT_TODO: {
+            const curTodo = state.todoItems.find(obj => obj.id === action.payload)
+            return{
+                ...state,
+                curTodo: Object.assign({},curTodo)
             }
         }
         default: return state

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Icon, message, notification } from 'antd';
+import { Icon } from 'antd';
 import './style.css';
 import './iconFont.css';
-import { request } from '../../utils/request'
 import { connect } from 'react-redux'
-import { loadUserList, switchList } from './../../actions/list'
+import { loadUserList, switchList, addList,deleteList, updateList } from './../../actions/list'
 
 class SideNav extends Component {
 
@@ -12,10 +11,8 @@ class SideNav extends Component {
         super(props)
         this.state = {
             fold: false,
-            // list: [],
             modalVisible: false,
             newListName: '',
-            // curList: -1,
             btnDisabled: true,
             updateModalVisible: false,
             curName: '',
@@ -40,32 +37,11 @@ class SideNav extends Component {
         this.props.dispatch(loadUserList(userId))
     }
 
-    // // 查询用户创建的清单
-    // queryUserLists = () => {
-    //     const userid = localStorage.getItem('userId')
-    //     request(`lists?userid=${userid}`).then(res => {
-    //         if(res.status === 0){
-    //             let userList = [];
-    //             res.data.forEach(obj => {
-    //                 if(obj.userCreate === 1){
-    //                     userList.push(obj);
-    //                 }else if(obj.userCreate === 0 && obj.name === '计划'){
-    //                     this.inboxList = obj.id;
-    //                 }
-    //             })
-    //             if(this.inboxList !== -1){
-    //                 this.props.queryListItems(this.inboxList, 0)
-    //                 this.props.updateCurList(this.inboxList)
-    //             }
-    //             this.setState({
-    //                 list: userList
-    //             })
-    //         }
-    //     })
-    // }
-
-
-     
+    componentWillReceiveProps(props){
+       this.setState({
+           curName: props.curListItem.name
+       })
+    }
 
     showModal = () => {
         this.setState({
@@ -82,20 +58,12 @@ class SideNav extends Component {
 
     saveList = () => {
         if(this.state.btnDisabled) return
-        const userid = localStorage.getItem('userId')
         const name = this.state.newListName;
-        request(`lists?userid=${userid}&name=${name}`,{ method: 'POST'}).then(res => {
-            if(res.status === 0){
-                message.success('创建成功')
-                this.setState({
-                    modalVisible: false,
-                    newListName: ''
-                })
-                this.queryUserLists()
-            }else{
-                message.error(res.msg)
-            }
+        this.setState({
+            modalVisible: false,
+            newListName: ''
         })
+        this.props.dispatch(addList(name))
     }
 
     checkEmpty = (e)=>{
@@ -124,37 +92,24 @@ class SideNav extends Component {
             })
         }
     }
-    editClick = ()=>{
+    editList = (e)=>{
         if(this.state.editBtnDisabled) return
         this.setState({
             updateModalVisible: false
         })
         const name = this.state.curName
-        const id = this.state.curList
-        request(`lists?id=${id}&name=${name}`,{ method: 'PUT' }).then(res => {
-            if(res.status === 0){
-                this.queryUserLists()
-            }else{
-                notification.error(res.msg)
-            }
-        })
+        if(name === this.props.curListItem.name) return // 没有发生改变
+        this.props.dispatch(updateList(name,this.props.curListItem.id))
     }
 
     deleteList = ()=>{
         this.setState({
             updateModalVisible: false
         })
-        request(`lists?id=${this.state.curList}`,{ method: 'DELETE' }).then(res => {
-            if(res.status === 0){
-                //window.location.reload()
-                this.queryUserLists()
-            }else{
-                notification.error(res.msg)
-            }
-        })
+        this.props.dispatch(deleteList(this.props.curListItem.id))
     }
 
-    updateList = ()=>{
+    showUpdateModal = ()=>{
         this.setState({
             updateModalVisible: true,
             editBtnDisabled: false
@@ -162,7 +117,8 @@ class SideNav extends Component {
     }
 
     render(){
-        const { curListItem } = this.props
+        const { list, curListId } = this.props
+        const curListItem = list.find(obj => obj.id === curListId) || {}
         const unfoldNav = () => {
             return(
                 <div className='sideNav'>
@@ -175,17 +131,23 @@ class SideNav extends Component {
                         <Icon className='' type='down'></Icon>
                     </div>
                     <ul className='list'>
-                        <li className='schedule' isActive={ curListItem.userCreate === 0 && curListItem.name === '计划' ? 'yes' : 'no'} onClick={()=>this.props.dispatch(switchList(20))}>
-                            <Icon type='schedule'></Icon>
-                            <span>计划</span>
-                        </li>
                         {
                             this.props.list.map((item, i) => {
-                                return ( item.userCreate === 1 &&
-                                    <li key={i} onClick={() => this.props.dispatch(switchList(item.id))} isActive={this.props.curListId === item.id ? 'yes' : 'no'}>
+                                return ( 
+                                    item.userCreate === 0 ? <li key={i} 
+                                    className='schedule' 
+                                    onClick={()=>this.props.dispatch(switchList(item.id))}
+                                    isactive={this.props.curListId === item.id ? 'yes' : 'no'}>
+                                        <Icon type='schedule'></Icon>
+                                        <span>{ item.name }</span>
+                                        <span name='count'>{ item.validCount > 0 ? item.validCount : '' }</span>
+                                    </li> : 
+                                    item.userCreate === 1 &&
+                                    <li key={i} onClick={() => this.props.dispatch(switchList(item.id))} 
+                                    isactive={this.props.curListId === item.id ? 'yes' : 'no'}>
                                         <Icon type='bars'></Icon>
                                         <span>{ item.name }</span>
-                                        <i className='iconfont icon-edit' onClick={this.updateList}></i>
+                                        <i className='iconfont icon-edit' onClick={this.showUpdateModal}></i>
                                         <span name='count'>{ item.validCount > 0 ? item.validCount : ''}</span>
                                     </li>
                                 )
@@ -253,7 +215,7 @@ class SideNav extends Component {
                         ></input>
                         <div>
                             <button onClick={()=> this.setState({ updateModalVisible: false })}>取消</button>
-                            <button onClick={this.editClick} style={this.state.editBtnDisabled === true ? {color: '#ccc'} : {}}>修改</button>
+                            <button onClick={this.editList} style={this.state.editBtnDisabled === true ? {color: '#ccc'} : {}}>修改</button>
                             <button onClick={this.deleteList}>删除清单</button>
                         </div>
                     </div>
@@ -267,7 +229,8 @@ function mapStateToProps(state){
     return{
         list: state.userList || [],
         curListId: state.curListId,
-        curListItem: state.curListItem || {}
+        curListItem: state.curListItem
+        
     }
 }
 

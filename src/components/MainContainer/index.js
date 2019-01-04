@@ -1,27 +1,21 @@
 import React , { Component } from 'react'
 import AddTodo from './AddTodo'
 import TodoItem from './TodoItem'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import './style.css'
 
 
-export default class MainContainer extends Component {
+class MainContainer extends Component {
     render(){
         const {
-            addTodoItem,
-            deleteTodo,
-            updateTodoStatus,
-            todoList
+            curListItem
         } = this.props
         return (
             <section className='mainContainer'>
-            <header>计划</header>
+            <header>{ curListItem.name }</header>
             <div>
-                <AddTodo addTodoItem={addTodoItem}></AddTodo>
+                <AddTodo></AddTodo>
                 <TodoItem
-                handleDelete={deleteTodo} 
-                handleUpdate={updateTodoStatus} 
-                todoList={todoList}
                  {...this.props}>
                 </TodoItem>
             </div>
@@ -30,4 +24,12 @@ export default class MainContainer extends Component {
         )
     }  
 }
+
+function mapStateToProps(state){
+    return {
+        curListItem: state.curListItem 
+    }
+}
+
+export default connect(mapStateToProps)(MainContainer)
 

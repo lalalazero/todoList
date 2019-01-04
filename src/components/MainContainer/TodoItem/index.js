@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Icon } from 'antd'
 import { connect } from 'react-redux'
-import { loadListComplete } from './../../../actions/list'
+import { setCompleteVisibility } from './../../../actions/list'
+import { loadListComplete, checkTodo, deleteTodo } from './../../../actions/todo'
 import './style.css'
+import { timingSafeEqual } from 'crypto';
 
 class TodoItem extends Component {
     constructor(props){
@@ -33,12 +35,10 @@ class TodoItem extends Component {
     
 
     handleShowComplete = ()=>{
-        const flag = !this.state.showComplete
-        this.setState({
-          showComplete: flag
-        })
+        const flag = !this.props.visible
+        this.props.dispatch(setCompleteVisibility(flag))
         if(flag){
-          this.props.dispatch(loadListComplete(this.props.curListItem.id))
+          this.props.dispatch(loadListComplete(this.props.curListId))
         }
     }
 
@@ -47,7 +47,7 @@ class TodoItem extends Component {
       if(e.target.nodeName.toLowerCase() !== 'li'){
         return;
       }
-      let id = e.target.getAttribute('itemId')
+      let id = e.target.getAttribute('itemID')
       this.curTodoId = id
       console.log(id)
       const { clientX, clientY } = e
@@ -85,11 +85,11 @@ class TodoItem extends Component {
       })
       switch(type){
         case 1: { // 标记已完成
-          this.done(this.curTodoId)
+          this.props.dispatch(checkTodo(this.curTodoId, 1))
           break
         }
         case 2: { // 标记未完成
-          this.unDone(this.curTodoId)
+          this.props.dispatch(checkTodo(this.curTodoId, 0))
           break
         }
         case 3: { // 修改事项
@@ -97,7 +97,7 @@ class TodoItem extends Component {
           break
         }
         case 4: { // 删除事项
-          this.deleteItem(this.curTodoId)
+          this.props.dispatch(deleteTodo(this.curTodoId))
           break
         }
         default: break
@@ -105,8 +105,8 @@ class TodoItem extends Component {
     }
 
     handleClick = (e)=>{
-      let id = e.target.getAttribute('itemId') - 0
-      console.log(e.target.getAttribute('itemId'))
+      let id = e.target.getAttribute('itemID') - 0
+      console.log(e.target.getAttribute('itemID'))
       this.setState({
         curTodoId: id
       })
@@ -117,7 +117,7 @@ class TodoItem extends Component {
 
     }
     doubleClick = (e) => {
-      let id = e.target.getAttribute('itemId') - 0
+      let id = e.target.getAttribute('itemID') - 0
       this.setState({
         curTodoId: id
       })
@@ -126,17 +126,17 @@ class TodoItem extends Component {
     }
 
     render() {
-      const { todoItems, completeItems } = this.props
+      const { todoItems, completeItems, visible } = this.props
       return (
         <ul className='todoItems' onContextMenu={this.popMenu}>
           {
             todoItems.map((todo, index) => {
               return ( 
                 <li className='todoItem' key={index} 
-                itemId={todo.id} active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
+                itemID={todo.id} active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
                 onDoubleClick={this.doubleClick}
                 onClick={this.handleClick}>
-                  <span className='anchor' onClick={()=>{this.done(todo.id)}}></span>
+                  <span className='anchor' onClick={()=>this.props.dispatch(checkTodo(todo.id, 1))}></span>
                   {todo.value}
                 </li>
               )
@@ -146,14 +146,14 @@ class TodoItem extends Component {
             <span className='showCompleteBtn' onClick={this.handleShowComplete}>点击查看已完成的事项</span>
           }
           {
-            this.state.showComplete === true ? (completeItems.map((todo, index) => {
+            visible === true ? (completeItems.map((todo, index) => {
               return (
                 <li className='todoItem done' key={index}
                 active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
                 onClick={this.handleClick}
                 onDoubleClick={this.doubleClick}
-                itemId={todo.id}>
-                  <Icon type='check-square' onClick={()=>{this.unDone(todo.id)}}></Icon>
+                itemID={todo.id}>
+                  <Icon type='check-square' onClick={()=>{this.props.dispatch(checkTodo(todo.id, 0))}}></Icon>
                   {todo.value}
                 </li>
               )
@@ -179,7 +179,8 @@ function mapStateToProps(state){
   return{
     todoItems: state.todoItems,
     completeItems: state.completeItems,
-    curListItem: state.curListItem
+    curListId: state.curListId,
+    visible: state.visible
   }
 }
 export default connect(mapStateToProps)(TodoItem)
