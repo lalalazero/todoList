@@ -7,30 +7,9 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
+import { reducers } from './reducers'
 
-const initState = {
-
-}
-const reducer = (state = initState,action)=>{
-    switch(action.type){
-        case 'lalala':{
-            console.log('reducer received..',action.payload)
-            return {
-                ...state,
-                'x': action.payload
-            }
-        }
-        case 'userListLoaded':{
-            console.log('reducer received2...',action.payload)
-            return {
-                ...state,
-                userList: action.payload
-            }
-        }
-        default: return state
-    }
-}
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = createStore(reducers, applyMiddleware(thunk))
 const render = ()=>{
     ReactDOM.render(
         <Provider store={store}> 

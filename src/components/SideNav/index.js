@@ -4,7 +4,7 @@ import './style.css';
 import './iconFont.css';
 import { request } from '../../utils/request'
 import { connect } from 'react-redux'
-import { loadUserList } from './../../actions/list'
+import { loadUserList, switchList } from './../../actions/list'
 
 class SideNav extends Component {
 
@@ -12,10 +12,10 @@ class SideNav extends Component {
         super(props)
         this.state = {
             fold: false,
-            list: [],
+            // list: [],
             modalVisible: false,
             newListName: '',
-            curList: -1,
+            // curList: -1,
             btnDisabled: true,
             updateModalVisible: false,
             curName: '',
@@ -154,31 +154,6 @@ class SideNav extends Component {
         })
     }
 
-    handleListClick = (item)=>{
-        console.log('list clicked...',item)
-        this.setState({
-            curList: item.id,
-            curName: item.name
-        })
-        console.log(this.props)
-        const { queryListItems, updateCurList, foldSideBar} = this.props
-        updateCurList(item.id)
-        queryListItems(item.id, 0)
-        foldSideBar()
-
-
-
-    }
-    clickDefaultList = (e) => {
-        this.setState({
-            curList: -1
-        })
-        const {  queryListItems, updateCurList, foldSideBar } = this.props
-        updateCurList(this.inboxList)
-        queryListItems(this.inboxList, 0)
-        foldSideBar()
-    }
-
     updateList = ()=>{
         this.setState({
             updateModalVisible: true,
@@ -187,6 +162,7 @@ class SideNav extends Component {
     }
 
     render(){
+        const { curListItem } = this.props
         const unfoldNav = () => {
             return(
                 <div className='sideNav'>
@@ -199,14 +175,14 @@ class SideNav extends Component {
                         <Icon className='' type='down'></Icon>
                     </div>
                     <ul className='list'>
-                        <li className='schedule' curlist={this.state.curList === -1 ? 'yes' : 'no'} onClick={this.clickDefaultList}>
+                        <li className='schedule' isActive={ curListItem.userCreate === 0 && curListItem.name === '计划' ? 'yes' : 'no'} onClick={()=>this.props.dispatch(switchList(20))}>
                             <Icon type='schedule'></Icon>
                             <span>计划</span>
                         </li>
                         {
                             this.props.list.map((item, i) => {
                                 return ( item.userCreate === 1 &&
-                                    <li key={i} onClick={() => this.handleListClick(item)} curlist={this.state.curList === item.id ? 'yes' : 'no'}>
+                                    <li key={i} onClick={() => this.props.dispatch(switchList(item.id))} isActive={this.props.curListId === item.id ? 'yes' : 'no'}>
                                         <Icon type='bars'></Icon>
                                         <span>{ item.name }</span>
                                         <i className='iconfont icon-edit' onClick={this.updateList}></i>
@@ -289,7 +265,9 @@ class SideNav extends Component {
 
 function mapStateToProps(state){
     return{
-        list: state.userList || []
+        list: state.userList || [],
+        curListId: state.curListId,
+        curListItem: state.curListItem || {}
     }
 }
 

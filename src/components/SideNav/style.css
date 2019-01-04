@@ -52,7 +52,7 @@
     align-items: center;
 }
 
-.list > li[curList='yes'] {
+.list > li[isActive='yes'] {
     background: #d7ecfa;
 }
  
@@ -81,7 +81,7 @@
     right: 35px;
     visibility: hidden;
 }
-.list > li[curList='yes'] .icon-edit {
+.list > li[isActive='yes'] .icon-edit {
     visibility: visible;
 }
 .list > li.schedule {

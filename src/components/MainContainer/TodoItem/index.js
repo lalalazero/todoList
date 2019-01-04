@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Icon } from 'antd'
+import { connect } from 'react-redux'
+import { loadListComplete } from './../../../actions/list'
 import './style.css'
 
-export default class TodoItem extends Component {
+class TodoItem extends Component {
     constructor(props){
       super(props)
       this.state = {
@@ -28,9 +30,16 @@ export default class TodoItem extends Component {
       const { handleDelete } = this.props
       handleDelete(id)
     }
-    showComplete = ()=>{
-      const { handleShowComplete } = this.props
-      handleShowComplete()
+    
+
+    handleShowComplete = ()=>{
+        const flag = !this.state.showComplete
+        this.setState({
+          showComplete: flag
+        })
+        if(flag){
+          this.props.dispatch(loadListComplete(this.props.curListItem.id))
+        }
     }
 
     popMenu = (e) => {
@@ -117,11 +126,11 @@ export default class TodoItem extends Component {
     }
 
     render() {
-      const { todoList, completeList, showComplete } = this.props
+      const { todoItems, completeItems } = this.props
       return (
         <ul className='todoItems' onContextMenu={this.popMenu}>
           {
-            todoList.map((todo, index) => {
+            todoItems.map((todo, index) => {
               return ( 
                 <li className='todoItem' key={index} 
                 itemId={todo.id} active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
@@ -134,10 +143,10 @@ export default class TodoItem extends Component {
             })
           }
           {
-            <span className='showCompleteBtn' onClick={this.showComplete}>点击查看已完成的事项</span>
+            <span className='showCompleteBtn' onClick={this.handleShowComplete}>点击查看已完成的事项</span>
           }
           {
-            showComplete === true ? (completeList.map((todo, index) => {
+            this.state.showComplete === true ? (completeItems.map((todo, index) => {
               return (
                 <li className='todoItem done' key={index}
                 active={this.state.curTodoId === todo.id ? 'yes' : 'no'} 
@@ -165,3 +174,12 @@ export default class TodoItem extends Component {
       )
     }
 }
+
+function mapStateToProps(state){
+  return{
+    todoItems: state.todoItems,
+    completeItems: state.completeItems,
+    curListItem: state.curListItem
+  }
+}
+export default connect(mapStateToProps)(TodoItem)
