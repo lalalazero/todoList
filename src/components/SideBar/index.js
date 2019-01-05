@@ -26,15 +26,15 @@ class SideBar extends Component {
         })
         console.log('will receive props..',props.todo)
     }
-    fold = ()=>{
-        const { foldSideBar } = this.props
-        foldSideBar()
-    }
-    delete = ()=> {
-        const { deleteTodo } = this.props
-        this.fold()
-        deleteTodo(this.props.sideItem.id)
-    }
+    // fold = ()=>{
+    //     const { foldSideBar } = this.props
+    //     foldSideBar()
+    // }
+    // delete = ()=> {
+    //     const { deleteTodo } = this.props
+    //     this.fold()
+    //     deleteTodo(this.props.sideItem.id)
+    // }
 
     // componentWillReceiveProps(nextProps){
     //     const sideItem = nextProps.sideItem
