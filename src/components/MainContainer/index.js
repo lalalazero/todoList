@@ -1,28 +1,20 @@
-import React , { Component } from 'react'
+import React  from 'react'
 import AddTodo from './AddTodo'
 import TodoItem from './TodoItem'
 import { connect } from 'react-redux'
 import './style.css'
 
 
-class MainContainer extends Component {
-    render(){
-        const {
-            curListItem
-        } = this.props
-        return (
-            <section className='mainContainer'>
-            <header>{ curListItem.name }</header>
-            <div>
-                <AddTodo></AddTodo>
-                <TodoItem
-                 {...this.props}>
-                </TodoItem>
-            </div>
-            
-            </section>
-        )
-    }  
+const MainContainer = (props) => {
+    return (
+        <section className='mainContainer'>
+        <header>{ props.curListItem.name }</header>
+        <div>
+            <AddTodo></AddTodo>
+            <TodoItem></TodoItem>
+        </div>
+        </section>
+    )
 }
 
 function mapStateToProps(state){

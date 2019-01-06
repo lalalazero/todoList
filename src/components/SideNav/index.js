@@ -117,10 +117,7 @@ class SideNav extends Component {
     }
 
     render(){
-        const { list, curListId } = this.props
-        const curListItem = list.find(obj => obj.id === curListId) || {}
-        const unfoldNav = () => {
-            return(
+        const unfoldNav = (
                 <div className='sideNav'>
                     <div className='menuBar'>
                         <Icon className='menuIcon' type='menu-unfold' onClick={this.foldNavBar}></Icon>
@@ -161,10 +158,9 @@ class SideNav extends Component {
                 </div>
 
             )
-        }
+        
 
-        const foldNav = () => {
-            return(
+        const foldNav = (
                 <div className='sideNav fold'>
                     <div className='menuBar'>
                         <Icon className='menuIcon' type='menu-unfold' onClick={this.foldNavBar}></Icon>
@@ -189,12 +185,12 @@ class SideNav extends Component {
                     </div>
                 </div>
             )
-        }
+        
 
         return(
            <div style={{height: '100%', display: 'inline'}}>
                 {
-                    this.state.fold === true ? foldNav() : unfoldNav()
+                    this.state.fold === true ? foldNav : unfoldNav
                 }
                 <div className="createListModalBg" style={ this.state.modalVisible === true ? { display: 'block' } : { display: 'none'}}>
                     <div className="createListModal">
