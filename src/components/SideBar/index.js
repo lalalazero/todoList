@@ -53,7 +53,7 @@ class SideBar extends Component {
         const { visible } = this.props
         return (
             <div className='sideBar' style={ visible === true ? { diplay: 'block' } : { display: 'none'}}>
-                <div className='title'>
+                <div className='title' style={{ height: 50 }}>
                     {
                         (this.state.curItem.done === 0 ? 
                             <span onClick={()=>this.check(1)} className='check'></span> : 
@@ -61,7 +61,6 @@ class SideBar extends Component {
                         )
                     }
                     <textarea ref={this.textarea} value={this.state.title} maxLength={100}
-                    rows={10}
                     onInput={this.resizeTitle} onBlur={this.modify}
                     onChange={event => this.setState({ title: event.target.value })}>
                     </textarea>
@@ -71,7 +70,6 @@ class SideBar extends Component {
                     <textarea placeholder='添加备注' 
                     onChange={event => this.setState({ note: event.target.value })}
                     onBlur={this.modify}
-                    rows={10}
                     value={this.state.note || ''}>
                     maxLength={100}
                     </textarea>
