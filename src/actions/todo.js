@@ -37,17 +37,24 @@ export const addTodo = (name) => async (dispatch,getState) => {
     const curList = getState().curListItem.id
     const res = await request(`lists/items?id=${curList}&value=${name}`,{ method: 'POST' })
     if(res.status === 0){
-        dispatch(loadListTodos(curList))
-        dispatch(refreshUserList()) // 只是为了更新数字
+        await dispatch(loadListTodos(curList))
+        await dispatch(refreshUserList()) // 只是为了更新数字
     }
 }
 
-const refreshTodos = (dispatch,getState)=> {
+const refreshTodos = async (dispatch,getState)=> {
     const store = getState()
     const listId = store.curListItem.id
-    dispatch(loadListTodos(listId))
+    const curTodo = store.curTodo
+    // 刷新待办列表
+    await dispatch(loadListTodos(listId))
     if(store.visible === true){
-        dispatch(loadListComplete(listId))
+        // 刷新完成列表
+        await dispatch(loadListComplete(listId))
+    }
+    // 刷新todo详情侧边栏
+    if(store.contentVisible === true){
+        await curTodo.id && dispatch(setCurrentTodo(curTodo.id))
     }
 }
 

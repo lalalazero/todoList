@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Icon } from 'antd'
 import { connect } from 'react-redux'
 import { setContentVisibility } from './../../actions/list'
-import { deleteTodo } from './../../actions/todo'
-import _ from 'lodash'
+import { deleteTodo,modifyTodo,checkTodo } from './../../actions/todo'
 import './style.css'
 
 class SideBar extends Component {
@@ -26,27 +25,7 @@ class SideBar extends Component {
         })
         console.log('will receive props..',props.todo)
     }
-    // fold = ()=>{
-    //     const { foldSideBar } = this.props
-    //     foldSideBar()
-    // }
-    // delete = ()=> {
-    //     const { deleteTodo } = this.props
-    //     this.fold()
-    //     deleteTodo(this.props.sideItem.id)
-    // }
-
-    // componentWillReceiveProps(nextProps){
-    //     const sideItem = nextProps.sideItem
-    //     if(!_.isEmpty(sideItem)){
-    //         console.log(sideItem)
-    //         this.setState({
-    //             curItem: sideItem,
-    //             note: sideItem.note || '',
-    //             title: sideItem.value
-    //         })
-    //     }
-    // }
+    
     resizeTitle = ()=>{
         const textarea = this.textarea.current
         const parent = textarea.parentNode
@@ -57,21 +36,18 @@ class SideBar extends Component {
             parent.style.height = `${newHeight}px`
         }
     }
-    updateNote = ()=>{
-        const { updateTodo } = this.props
-        updateTodo(this.state.curItem.id,this.state.curItem.value,this.state.note)
+
+    modify = ()=>{
+        const { dispatch } = this.props
+        let id,title,note;
+        id = this.state.curItem.id
+        title = this.state.title
+        note = this.state.note
+        dispatch(modifyTodo(id,title,note))
     }
-    updateTitle = () => {
-        const { updateTodo } = this.props
-        updateTodo(this.state.curItem.id, this.state.title, this.state.curItem.note)
-    }
-    done = ()=>{
-        const { updateTodoStatus } = this.props
-        updateTodoStatus(this.state.curItem.id, 1)
-    }
-    undone = ()=>{
-        const { updateTodoStatus } = this.props
-        updateTodoStatus(this.state.curItem.id, 0)
+    
+    check = (status)=>{
+        this.props.dispatch(checkTodo(this.state.curItem.id,status))
     }
     render(){
         const { visible } = this.props
@@ -80,12 +56,13 @@ class SideBar extends Component {
                 <div className='title'>
                     {
                         (this.state.curItem.done === 0 ? 
-                            <span onClick={this.done} className='check'></span> : 
-                            <Icon onClick={this.undone} type="check-square"></Icon>
+                            <span onClick={()=>this.check(1)} className='check'></span> : 
+                            <Icon onClick={()=>this.check(0)} type="check-square"></Icon>
                         )
                     }
                     <textarea ref={this.textarea} value={this.state.title} maxLength={100}
-                    onInput={this.resizeTitle} onBlur={this.updateTitle}
+                    rows={10}
+                    onInput={this.resizeTitle} onBlur={this.modify}
                     onChange={event => this.setState({ title: event.target.value })}>
                     </textarea>
                 </div>
@@ -93,7 +70,8 @@ class SideBar extends Component {
                     <Icon type='edit'></Icon>
                     <textarea placeholder='添加备注' 
                     onChange={event => this.setState({ note: event.target.value })}
-                    onBlur={this.updateNote}
+                    onBlur={this.modify}
+                    rows={10}
                     value={this.state.note || ''}>
                     maxLength={100}
                     </textarea>
