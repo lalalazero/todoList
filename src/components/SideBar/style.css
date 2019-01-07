@@ -16,6 +16,7 @@
     resize: none;
     color: #262626;
     height: 100%;
+    font-weight: bold;
 }
 .title textarea:focus {
     outline: none;

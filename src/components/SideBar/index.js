@@ -11,7 +11,8 @@ class SideBar extends Component {
         this.state = {
             curItem: props.todo,
             note: '',
-            title: ''
+            title: '',
+            editTitle:false
         }
         console.log('sidebar..init..',JSON.stringify(this.state.curItem))
         this.textarea = React.createRef()
@@ -21,9 +22,11 @@ class SideBar extends Component {
         this.setState({
             curItem: Object.assign({},todo),
             note: todo.note || '',
-            title: todo.value
+            title: todo.value,
+            editTitle: false
         })
         console.log('will receive props..',props.todo)
+        document.querySelector('.title').removeAttribute('style')
     }
     
     resizeTitle = ()=>{
@@ -31,6 +34,10 @@ class SideBar extends Component {
         const parent = textarea.parentNode
         let newHeight = textarea.scrollHeight + 20
         console.log(textarea.scrollHeight, parent.clientHeight)
+        if(newHeight > 300){
+            parent.style.height = '300px'
+            return
+        }
         if(newHeight >= parent.clientHeight){
             console.log('超过了')
             parent.style.height = `${newHeight}px`
@@ -49,21 +56,37 @@ class SideBar extends Component {
     check = (status)=>{
         this.props.dispatch(checkTodo(this.state.curItem.id,status))
     }
+    showEditTitle = (e)=>{
+        console.log(e.target)
+        const divHeight = e.target.clientHeight
+        const divWidth = e.target.clientWidth
+        console.log('divHeight...',divHeight)
+        this.setState({ editTitle: true })
+        document.querySelector('.title').style.height = 20 + divHeight + 'px'
+        document.querySelector('.title').style.width = 80 + divWidth + 'px'
+    }
     render(){
         const { visible } = this.props
         return (
             <div className='sideBar' style={ visible === true ? { diplay: 'block' } : { display: 'none'}}>
-                <div className='title' style={{ height: 50 }}>
+                <div className='title'>
                     {
                         (this.state.curItem.done === 0 ? 
                             <span onClick={()=>this.check(1)} className='check'></span> : 
                             <Icon onClick={()=>this.check(0)} type="check-square"></Icon>
                         )
                     }
-                    <textarea ref={this.textarea} value={this.state.title} maxLength={100}
-                    onInput={this.resizeTitle} onBlur={this.modify}
-                    onChange={event => this.setState({ title: event.target.value })}>
-                    </textarea>
+                    {
+                        this.state.editTitle === false ? <div onClick={this.showEditTitle}> {this.state.title} </div> : (
+                            <textarea ref={this.textarea} value={this.state.title} maxLength={100}
+                                onInput={this.resizeTitle} onBlur={this.modify}
+                                onChange={event => this.setState({ title: event.target.value })}>
+                            </textarea>
+                            
+                        )
+                    }
+                    
+                    
                 </div>
                 <div className='content'>
                     <Icon type='edit'></Icon>
