@@ -46,8 +46,8 @@ export default class Register extends Component {
             })
             if(res.status === 0){
                 message.success('注册成功')
-                localStorage.setItem('userId',res.data)
-                this.context.router.history.push('/home')
+                localStorage.setItem('token',res.data)
+                this.context.router.history.push('/')
             }else{
                 message.error(res.msg)
             }

@@ -32,7 +32,7 @@ export default class Login extends Component {
         this.setState({
             isloading: true
         })
-        request('/login',{
+        request('login',{
             body: {
                 username: this.username.current.value,
                 password: this.password.current.value
@@ -45,8 +45,8 @@ export default class Login extends Component {
             if(res.status === 0){
                 // 跳转到 Home 页
                 message.success('登陆成功')
-                localStorage.setItem('userId',res.data)
-                this.context.router.history.push('/home')
+                localStorage.setItem('token',res.data)
+                this.context.router.history.push('/')
             }else{
                 message.error(res.msg)
             }

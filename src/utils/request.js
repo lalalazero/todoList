@@ -3,6 +3,8 @@ const prefix = 'http://localhost:8001/api/'
 function checkstauts(response){
     if(response.status >= 200 && response.status < 300){
         return response
+    }else if(response.status === 403){
+        console.log('fetch 请求 403 了')
     }
     const errortext = response.statusText;
     const error = new Error(errortext);
@@ -16,7 +18,9 @@ function request(url, options) {
     const defaultOptions = {
         method: 'GET',
         credentials: 'include',
-        header: localStorage.getItem('token')
+        header: {
+            token: localStorage.getItem('token') || ''
+        }
     }
     const newOptions = {...defaultOptions, ...options};
     if(
