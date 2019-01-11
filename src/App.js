@@ -10,20 +10,16 @@ import './App.css';
 const isLogin = ()=>{
   const token = localStorage.getItem('token')
   let auth = false;
-  alert('isLogin enter...')
-  if(token === null){
-    console.log('auth = false')
-  }else{
-    request('valid').then(res=>{
-      if(res && res.status === 0){
-        auth = true;
-        
-      }
-      console.log('2...')
-    })
-    console.log('1...')
-    return auth;
-  }
+  request('valid').then(res=>{
+    if(res && res.status === 0){
+      auth = true;
+      
+    }
+    console.log('2...')
+  })
+  console.log('1...')
+  return auth;
+  
 }
 
 const auth = {

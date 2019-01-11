@@ -18,7 +18,7 @@ function request(url, options) {
     const defaultOptions = {
         method: 'GET',
         credentials: 'include',
-        header: {
+        headers: {
             token: localStorage.getItem('token') || ''
         }
     }
@@ -51,6 +51,10 @@ function request(url, options) {
             return response.json();
         }
     }).catch(e => {
+        if(e.name === 403){
+            alert('fetch error...403')
+            window.location.href = 'http://localhost:3000/register'
+        }
         console.log('fetch请求出错...', JSON.stringify(e));
     })
 }
