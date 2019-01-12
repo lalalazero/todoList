@@ -8,8 +8,23 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { reducers } from './reducers'
+import { request } from './utils/request'
+import { SET_AUTH } from './actions/auth'
 
 const store = createStore(reducers, applyMiddleware(thunk))
+const dispatch = store.dispatch
+const checkAuth = ()=>{
+    request('valid').then(res => {
+      console.log('checkAuth..res=',res)
+      if(res && res.status === 0){
+        dispatch({
+          type: SET_AUTH,
+          payload: true
+        })
+      }
+    })
+  }
+checkAuth()
 const render = ()=>{
     ReactDOM.render(
         <Provider store={store}> 

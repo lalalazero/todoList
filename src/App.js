@@ -9,52 +9,27 @@ import { connect } from 'react-redux';
 import { request } from './utils/request';
 import { SET_AUTH } from './actions/auth';
 
-
-
-class PrivateRout extends Component{
-  render(){
-    const Component = this.props.component;
-    const authed = this.props.authed;
-    console.log('PrivateRout authed..' , authed);
-
-    return (
-      <Route path="/" {...this.props} 
-        render={props => (authed ? (<Component {...props}></Component>) : (<Redirect
-          to={{pathname: '/login', state: { from: props.location}}}>
-          </Redirect>))
-        }
-      >
-      </Route>
-    )
-  }
-}
+const xxx = () => <div>xxx</div>
 
 class App extends Component{
   
   componentDidMount(){
     console.log('App did mount..checkAuth..')
-    this.checkAuth()
   }
-  checkAuth = ()=>{
-    const { dispatch } = this.props;
-    request('valid').then(res => {
-      console.log('checkAuth..res=',res)
-      if(res && res.status === 0){
-        dispatch({
-          type: SET_AUTH,
-          payload: true
-        })
-      }
-    })
-  }
+  
   render(){
     const { authed } = this.props;
+    console.log('App authed = ',authed)
     return (
       <Router>
         <div className='layout'>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <PrivateRout path='/' exact authed={authed} component={Home}/>
+          <Route path="/" exact render={props=>{
+            const p = authed ? <Home {...props}></Home> : <Redirect to={{pathname:'/xxx'}}></Redirect>
+            return p;
+          }}></Route>
+          <Route path="/xxx" component={xxx}></Route>
         </div>
       </Router>
     

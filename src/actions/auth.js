@@ -8,12 +8,10 @@ export const isAuthed = ()=> async (dispatch,getState) => {
             type: SET_AUTH,
             payload: true
         })
-        return true;
     }else{
         await dispatch({
             type: SET_AUTH,
             payload: false
         })
-        return false;
     }
 }
