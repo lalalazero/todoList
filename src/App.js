@@ -1,46 +1,71 @@
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from './routes/Login'
 import Register from './routes/Register'
 import Home from './routes/Home'
 import './App.css';
+import { connect } from 'react-redux';
 import { request } from './utils/request';
+import { SET_AUTH } from './actions/auth';
 
-const isAuthed = async ()=>{
-  const res = await request('valid')
-  if(res && res.status === 0){
-    console.log('auth is true..')
-    return true
-  }else{
-    console.log('auth is false')
-    return false
+
+
+class PrivateRout extends Component{
+  render(){
+    const Component = this.props.component;
+    const authed = this.props.authed;
+    console.log('PrivateRout authed..' , authed);
+
+    return (
+      <Route path="/" {...this.props} 
+        render={props => (authed ? (<Component {...props}></Component>) : (<Redirect
+          to={{pathname: '/login', state: { from: props.location}}}>
+          </Redirect>))
+        }
+      >
+      </Route>
+    )
   }
-  console.log('auth is undefined ...end...')
 }
 
-const PrivateRout = ({component: Component, ...rest})=>{
-  return (
-    <Route {...rest} render={props => isAuthed ? (
-      <Component {...props} />
-    ):(
-      <Redirect to={{ pathname: '/login', state: { from: props.location }}} />
-    )} >
-    </Route>
-  )
-}
-const App = () => {
-  return (
-    <Router>
-      <div className='layout'>
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <PrivateRout path='/' exact component={Home}/>
-      </div>
-    </Router>
+class App extends Component{
   
-  )
+  componentDidMount(){
+    console.log('App did mount..checkAuth..')
+    this.checkAuth()
+  }
+  checkAuth = ()=>{
+    const { dispatch } = this.props;
+    request('valid').then(res => {
+      console.log('checkAuth..res=',res)
+      if(res && res.status === 0){
+        dispatch({
+          type: SET_AUTH,
+          payload: true
+        })
+      }
+    })
+  }
+  render(){
+    const { authed } = this.props;
+    return (
+      <Router>
+        <div className='layout'>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <PrivateRout path='/' exact authed={authed} component={Home}/>
+        </div>
+      </Router>
+    
+    )
+  }
+  
 };
-
-export default App;
+function mapStateToProps(state){
+  return{
+    authed: state.authed
+  }
+}
+export default connect(mapStateToProps)(App);
 
