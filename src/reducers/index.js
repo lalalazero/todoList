@@ -2,6 +2,7 @@ import { SWITCH_LIST, USER_LIST_LOADED,SET_VISIBILITY, SET_CONTENT_VISIBILITY } 
 
 import { LIST_TODO_LOADED, LIST_COMPLETE_LOADED, SET_CURRENT_TODO } from './../actions/todo'
 
+import { SET_AUTH } from './../actions/auth'
 
 const initState = {
     x: -1,
@@ -12,7 +13,8 @@ const initState = {
     curListItem: {},
     visible: false,
     curTodo: {},
-    contentVisible: false
+    contentVisible: false,
+    authed: false
 }
 
 export const reducers = (state = initState, action) => {
@@ -79,6 +81,13 @@ export const reducers = (state = initState, action) => {
             return{
                 ...state,
                 contentVisible: action.payload
+            }
+        }
+        case SET_AUTH: {
+            console.log('set auth...payload=',action.payload)
+            return{
+                ...state,
+                authed: action.payload
             }
         }
         default: return state

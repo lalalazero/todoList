@@ -19,6 +19,7 @@ export default class Register extends Component {
         this.registerForm = React.createRef()
     }
     register = (e) => {
+        const { dispatch } = this.props
         e.preventDefault()
         if(this.state.passError || this.state.nameError){
             return;
@@ -46,7 +47,8 @@ export default class Register extends Component {
             })
             if(res.status === 0){
                 message.success('注册成功')
-                localStorage.setItem('token',res.data)
+                localStorage.setItem('token',res.data.token)
+                localStorage.setItem('userId',res.data.userId)
                 this.context.router.history.push('/')
             }else{
                 message.error(res.msg)

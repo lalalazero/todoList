@@ -52,7 +52,8 @@ function request(url, options) {
         }
     }).catch(e => {
         if(e.name === 403){
-            alert('fetch error...403')
+            console.log('请求 403 了...')
+            localStorage.removeItem('token');
             window.location.href = 'http://localhost:3000/register'
         }
         console.log('fetch请求出错...', JSON.stringify(e));

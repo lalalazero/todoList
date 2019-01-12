@@ -4,30 +4,24 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from './routes/Login'
 import Register from './routes/Register'
 import Home from './routes/Home'
-import { request } from './utils/request'
 import './App.css';
+import { request } from './utils/request';
 
-const isLogin = ()=>{
-  const token = localStorage.getItem('token')
-  let auth = false;
-  request('valid').then(res=>{
-    if(res && res.status === 0){
-      auth = true;
-      
-    }
-    console.log('2...')
-  })
-  console.log('1...')
-  return auth;
-  
+const isAuthed = async ()=>{
+  const res = await request('valid')
+  if(res && res.status === 0){
+    console.log('auth is true..')
+    return true
+  }else{
+    console.log('auth is false')
+    return false
+  }
+  console.log('auth is undefined ...end...')
 }
 
-const auth = {
-  isAuthenticated: isLogin()
-}
 const PrivateRout = ({component: Component, ...rest})=>{
   return (
-    <Route {...rest} render={props => auth.isAuthenticated === true ? (
+    <Route {...rest} render={props => isAuthed ? (
       <Component {...props} />
     ):(
       <Redirect to={{ pathname: '/login', state: { from: props.location }}} />
@@ -41,7 +35,7 @@ const App = () => {
       <div className='layout'>
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <PrivateRout path='/' exact component={Home} />
+        <PrivateRout path='/' exact component={Home}/>
       </div>
     </Router>
   
@@ -49,3 +43,4 @@ const App = () => {
 };
 
 export default App;
+

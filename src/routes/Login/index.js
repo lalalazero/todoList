@@ -21,6 +21,7 @@ export default class Login extends Component {
         this.password = React.createRef()
     }
     login = (e) => {
+        const { dispatch } = this.props
         e.preventDefault()
         if(this.state.nameError || this.state.passError){
             return;
@@ -45,7 +46,8 @@ export default class Login extends Component {
             if(res.status === 0){
                 // 跳转到 Home 页
                 message.success('登陆成功')
-                localStorage.setItem('token',res.data)
+                localStorage.setItem('token',res.data.token)
+                localStorage.setItem('userId',res.data.userId)
                 this.context.router.history.push('/')
             }else{
                 message.error(res.msg)
@@ -76,6 +78,7 @@ export default class Login extends Component {
         }
     }
     render(){
+        
         return (
             <div className='loginBg'>
                 <div className='panel'>
